@@ -3,504 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DataNova — Data Intelligence Blog</title>
-<meta name="description" content="Blog de data science en español e inglés. Tutoriales, análisis, prompts y recursos sobre Python, SQL, Machine Learning y visualización de datos.">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Bits & Datos — Data Intelligence Blog</title>
+<meta name="description" content="Blog de data science en español e inglés. Tutoriales Sr sobre Python, SQL, Machine Learning, Power BI e IA Generativa.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #08080e;
-  --bg2: #0f0f18;
-  --bg3: #171724;
-  --bg4: #1f1f2e;
-  --accent: #6c5ce7;
-  --accent-glow: rgba(108,92,231,0.25);
-  --teal: #00cdb8;
-  --teal-glow: rgba(0,205,184,0.2);
-  --coral: #ff5e7d;
-  --amber: #ffa500;
-  --text: #eeedf8;
-  --text2: #8e8aaa;
-  --text3: #4e4a6a;
-  --border: rgba(108,92,231,0.15);
-  --border2: rgba(108,92,231,0.28);
-  --card: rgba(255,255,255,0.025);
-  --card-hover: rgba(108,92,231,0.06);
-  --radius: 14px;
-  --radius-sm: 8px;
+  --bg:#07070d;--bg2:#0e0e17;--bg3:#161620;--bg4:#1e1e2a;
+  --accent:#6c5ce7;--accent2:#a29bfe;--teal:#00cdb8;--coral:#ff5e7d;--amber:#f9a825;
+  --text:#eeedf8;--text2:#8e8aaa;--text3:#4a4668;
+  --border:rgba(108,92,231,0.14);--border2:rgba(108,92,231,0.3);
+  --card:rgba(255,255,255,0.022);--r:14px;--rsm:8px;
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+/* AMBIENT */
+.amb{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 65% 45% at 90% 5%,rgba(108,92,231,0.08) 0%,transparent 65%),
+  radial-gradient(ellipse 45% 40% at 5% 85%,rgba(0,205,184,0.05) 0%,transparent 60%)}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(108,92,231,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(108,92,231,0.025) 1px,transparent 1px);
+  background-size:68px 68px}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;
+  background:rgba(7,7,13,0.9);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.25rem;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:6px}
+.logo-bit{color:var(--accent)}.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links a{display:flex;align-items:center;height:58px;padding:0 .9rem;color:var(--text2);text-decoration:none;font-size:.8rem;font-weight:500;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:50%;right:50%;height:2px;background:var(--accent);transition:all .25s}
+.nav-links a:hover{color:var(--text)}.nav-links a:hover::after{left:.9rem;right:.9rem}
+.nav-right{display:flex;align-items:center;gap:8px}
+.lang-pill{display:flex;background:var(--bg3);border:0.5px solid var(--border);border-radius:20px;padding:3px;gap:2px}
+.lb{padding:3px 10px;border-radius:16px;border:none;cursor:pointer;font-size:.7rem;font-weight:700;transition:all .2s;background:transparent;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.lb.on{background:var(--accent);color:#fff}
+.nav-cta{padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:20px;font-size:.76rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.nav-cta:hover{background:var(--accent2);color:var(--bg)}
 
-/* ─── NOISE OVERLAY ─── */
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  opacity: 0.4;
-}
+/* PAGE */
+.page{position:relative;z-index:1}
 
-/* ─── AMBIENT BG ─── */
-.ambient {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 70% 50% at 85% 10%, rgba(108,92,231,0.09) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 40% at 5% 80%, rgba(0,205,184,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 50% at 50% 50%, rgba(255,94,125,0.03) 0%, transparent 70%);
-}
+/* HERO */
+#home{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:5rem 2rem 3rem;max-width:1120px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(0,205,184,0.07);border:0.5px solid rgba(0,205,184,0.22);border-radius:20px;padding:4px 13px;width:fit-content;margin-bottom:1.75rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--teal);animation:fu .6s ease both .1s}
+.edot{width:5px;height:5px;border-radius:50%;background:var(--teal)}
+h1.hero{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.8rem,6.5vw,5.5rem);line-height:1.02;margin-bottom:1.4rem;animation:fu .6s ease both .2s}
+h1.hero em{font-style:normal;background:linear-gradient(130deg,var(--accent),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1rem;color:var(--text2);max-width:480px;line-height:1.75;margin-bottom:2.25rem;animation:fu .6s ease both .3s}
+.hero-btns{display:flex;gap:9px;flex-wrap:wrap;animation:fu .6s ease both .4s}
+.bp{padding:.72rem 1.6rem;background:var(--accent);color:#fff;border:none;border-radius:var(--rsm);font-size:.875rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.bp:hover{background:var(--accent2);color:var(--bg);transform:translateY(-2px);box-shadow:0 8px 24px rgba(108,92,231,.3)}
+.bg{padding:.72rem 1.6rem;background:transparent;color:var(--text);border:0.5px solid var(--border2);border-radius:var(--rsm);font-size:.875rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s;font-family:'DM Sans',sans-serif}
+.bg:hover{border-color:var(--accent);color:var(--accent)}
+.hero-stats{display:flex;gap:2.5rem;margin-top:4rem;padding-top:2.25rem;border-top:0.5px solid var(--border);flex-wrap:wrap;animation:fu .6s ease both .5s}
+.sv{font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:800}.sv span{color:var(--accent)}
+.sl{font-size:.75rem;color:var(--text3);margin-top:2px}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* ─── GRID LINES ─── */
-.grid-lines {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(108,92,231,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(108,92,231,0.03) 1px, transparent 1px);
-  background-size: 72px 72px;
-}
+/* SECTIONS */
+.sec{padding:4.5rem 2rem;max-width:1120px;margin:0 auto}
+.hr{border:none;border-top:0.5px solid var(--border);margin:0 2rem}
+.stag{font-family:'JetBrains Mono',monospace;font-size:.67rem;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.55rem}
+.sh{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3.2vw,2.2rem);font-weight:700;line-height:1.18;margin-bottom:2.25rem}
+.sh em{font-style:normal;color:var(--accent)}
 
-/* ─── NAV ─── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 2.5rem; height: 60px;
-  background: rgba(8,8,14,0.88);
-  backdrop-filter: blur(20px) saturate(1.4);
-  border-bottom: 0.5px solid var(--border);
-}
-.nav-logo {
-  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem;
-  color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 7px;
-}
-.nav-logo-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: blink 2.5s infinite; }
-@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
-.nav-logo span { color: var(--accent); }
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 2fr;gap:2.5rem;align-items:start}
+@media(max-width:680px){.about-grid{grid-template-columns:1fr}}
+.author-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:1.5rem;text-align:center}
+.author-avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#fff;margin:0 auto 1rem}
+.author-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.25rem}
+.author-title{font-size:.8rem;color:var(--teal);margin-bottom:.75rem;font-family:'JetBrains Mono',monospace}
+.author-bio-short{font-size:.82rem;color:var(--text2);line-height:1.6;margin-bottom:1rem}
+.author-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+.atag{padding:2px 9px;border-radius:20px;font-size:.68rem;font-weight:600;background:rgba(108,92,231,.1);color:var(--accent2);border:0.5px solid rgba(108,92,231,.2)}
+.about-content h3{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:.75rem}
+.about-content p{font-size:.88rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1.25rem}
+.exp-item{background:var(--card);border:0.5px solid var(--border);border-radius:var(--rsm);padding:.75rem}
+.exp-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:var(--accent)}
+.exp-label{font-size:.75rem;color:var(--text2);margin-top:2px}
 
-.nav-center { display: flex; gap: 0; list-style: none; }
-.nav-center a {
-  display: flex; align-items: center; height: 60px;
-  padding: 0 1.1rem; color: var(--text2);
-  text-decoration: none; font-size: 0.82rem; font-weight: 500;
-  transition: color 0.2s; position: relative; white-space: nowrap;
-}
-.nav-center a::after {
-  content: ''; position: absolute; bottom: 0; left: 50%; right: 50%;
-  height: 2px; background: var(--accent); transition: all 0.25s;
-}
-.nav-center a:hover { color: var(--text); }
-.nav-center a:hover::after, .nav-center a.active::after { left: 1.1rem; right: 1.1rem; }
-.nav-center a.active { color: var(--text); }
+/* TOPICS */
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:9px}
+.tc{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:1.3rem 1.2rem;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--teal));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.tc:hover{background:rgba(108,92,231,.06);border-color:var(--border2);transform:translateY(-3px)}.tc:hover::before{transform:scaleX(1)}
+.tico{font-size:1.5rem;margin-bottom:.65rem;display:block}.tname{font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;margin-bottom:.3rem}.tdesc{font-size:.76rem;color:var(--text2);line-height:1.5}
 
-.nav-right { display: flex; align-items: center; gap: 10px; }
-.lang-pill {
-  display: flex; background: var(--bg3); border: 0.5px solid var(--border);
-  border-radius: 20px; padding: 3px; gap: 2px;
-}
-.lang-btn {
-  padding: 4px 11px; border-radius: 16px; border: none; cursor: pointer;
-  font-size: 0.72rem; font-weight: 700; transition: all 0.2s;
-  background: transparent; color: var(--text3);
-  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em;
-}
-.lang-btn.active { background: var(--accent); color: #fff; }
-.nav-cta {
-  padding: 6px 16px; background: var(--accent); color: #fff;
-  border: none; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
-  cursor: pointer; transition: all 0.2s; text-decoration: none;
-  font-family: 'DM Sans', sans-serif;
-}
-.nav-cta:hover { background: #8b7cf8; transform: translateY(-1px); }
+/* ARTICLES */
+.articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.art-card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .25s;display:flex;flex-direction:column}
+.art-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+.art-code{background:#0c0c18;padding:1.1rem 1.3rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;line-height:1.8;min-height:95px;border-bottom:0.5px solid var(--border)}
+.kw{color:var(--accent)}.fn{color:var(--teal)}.str{color:#f9a875}.cm{color:var(--text3)}
+.art-body{padding:1.1rem 1.25rem;flex:1;display:flex;flex-direction:column}
+.art-meta{display:flex;align-items:center;gap:7px;margin-bottom:.6rem;flex-wrap:wrap}
+.tag{padding:2px 8px;border-radius:20px;font-size:.66rem;font-weight:600;font-family:'JetBrains Mono',monospace}
+.t-py{background:rgba(0,205,184,.1);color:var(--teal)}.t-sql{background:rgba(255,94,125,.1);color:var(--coral)}
+.t-ml{background:rgba(108,92,231,.12);color:var(--accent2)}.t-viz{background:rgba(249,168,37,.1);color:var(--amber)}
+.t-ai{background:rgba(255,94,125,.1);color:#ff9eb5}.t-bi{background:rgba(0,205,184,.1);color:#7fffee}
+.adate{font-size:.7rem;color:var(--text3)}.amin{font-size:.7rem;color:var(--text3);margin-left:auto}
+.atitle{font-family:'Syne',sans-serif;font-size:.98rem;font-weight:700;line-height:1.3;margin-bottom:.45rem}
+.aexc{font-size:.79rem;color:var(--text2);line-height:1.6;flex:1}
+.art-foot{display:flex;align-items:center;justify-content:space-between;margin-top:.9rem;padding-top:.8rem;border-top:0.5px solid var(--border)}
+.alink{font-size:.76rem;font-weight:600;color:var(--accent);text-decoration:none;transition:color .2s}.alink:hover{color:var(--teal)}
 
-/* ─── SECTIONS WRAPPER ─── */
-.page { position: relative; z-index: 1; }
+/* MODAL - artículo completo */
+.modal-overlay{position:fixed;inset:0;z-index:2000;background:rgba(7,7,13,.95);backdrop-filter:blur(12px);display:none;align-items:flex-start;justify-content:center;overflow-y:auto;padding:2rem 1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--r);max-width:760px;width:100%;padding:2.5rem;position:relative;margin:auto}
+.modal-close{position:absolute;top:1rem;right:1rem;background:var(--bg3);border:0.5px solid var(--border);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;color:var(--text2);transition:all .2s}
+.modal-close:hover{border-color:var(--coral);color:var(--coral)}
+.modal-tag{margin-bottom:.6rem}.modal-title{font-family:'Syne',sans-serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:800;line-height:1.2;margin-bottom:1rem}
+.modal-meta{display:flex;gap:1rem;font-size:.78rem;color:var(--text2);margin-bottom:1.5rem;padding-bottom:1.25rem;border-bottom:0.5px solid var(--border);flex-wrap:wrap}
+.modal-body{font-size:.9rem;line-height:1.85;color:var(--text2)}
+.modal-body h2{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;color:var(--text);margin:1.75rem 0 .65rem}
+.modal-body h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--accent2);margin:1.25rem 0 .5rem}
+.modal-body p{margin-bottom:.9rem}
+.modal-body pre{background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--rsm);padding:1rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;line-height:1.75;overflow-x:auto;margin:1rem 0;color:var(--text)}
+.modal-body code{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:var(--bg3);padding:1px 6px;border-radius:4px;color:var(--teal)}
+.modal-body ul,ol{padding-left:1.25rem;margin-bottom:.9rem}
+.modal-body li{margin-bottom:.35rem}
+.modal-body strong{color:var(--text);font-weight:500}
+.modal-body .tip{background:rgba(0,205,184,.06);border:0.5px solid rgba(0,205,184,.2);border-radius:var(--rsm);padding:.85rem 1rem;margin:1rem 0;font-size:.84rem}
+.modal-body .tip strong{color:var(--teal)}
 
-/* ─── HERO ─── */
-#home {
-  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
-  padding: 5rem 2.5rem 3rem; max-width: 1140px; margin: 0 auto;
-}
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(0,205,184,0.08); border: 0.5px solid rgba(0,205,184,0.25);
-  border-radius: 20px; padding: 5px 14px; width: fit-content; margin-bottom: 2rem;
-  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--teal);
-  letter-spacing: 0.08em; animation: fadeUp 0.6s ease both 0.1s;
-}
-.hero-eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+/* PROMPT GENERATOR */
+.pg-wrap{background:var(--bg2);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:4.5rem 2rem}
+.pg-inner{max-width:840px;margin:0 auto}
+.pg-head{text-align:center;margin-bottom:2.5rem}
+.pg-head h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;margin-bottom:.55rem}
+.pg-head p{font-size:.86rem;color:var(--text2)}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+@media(max-width:540px){.cg{grid-template-columns:1fr}}
+.cf{grid-column:1/-1}
+.cl{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--teal);letter-spacing:.1em;margin-bottom:5px}
+select,input[type=text]{width:100%;padding:.62rem .85rem;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--rsm);color:var(--text);font-size:.83rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;appearance:none}
+select:focus,input:focus{border-color:var(--accent)}option{background:#16162020}
+.genbtn{width:100%;padding:.85rem;background:linear-gradient(130deg,var(--accent),#4a3db8);border:none;border-radius:var(--rsm);color:#fff;font-family:'Syne',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .22s;margin-bottom:12px;letter-spacing:.02em}
+.genbtn:hover{filter:brightness(1.15);transform:translateY(-2px);box-shadow:0 10px 30px rgba(108,92,231,.3)}
+.ld{display:none;align-items:center;gap:7px;padding:.4rem 0}.ld.on{display:flex}
+.ldot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:lp 1.2s infinite}
+.ldot:nth-child(2){animation-delay:.2s}.ldot:nth-child(3){animation-delay:.4s}
+@keyframes lp{0%,80%,100%{transform:scale(.5);opacity:.3}40%{transform:scale(1);opacity:1}}
+.ld span{font-size:.78rem;color:var(--text2)}
+.outbox{display:none;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);padding:1.2rem 1.35rem}.outbox.on{display:block}
+.otag{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--accent);letter-spacing:.1em;margin-bottom:9px}
+.otext{font-size:.86rem;line-height:1.85;color:var(--text);white-space:pre-wrap}
+.oacts{display:flex;gap:7px;margin-top:12px;padding-top:11px;border-top:0.5px solid var(--border)}
+.cpbtn{padding:5px 14px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}.cpbtn:hover{background:var(--accent2);color:var(--bg)}
+.rgbtn{padding:5px 14px;background:transparent;color:var(--text2);border:0.5px solid var(--border);border-radius:6px;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}.rgbtn:hover{border-color:var(--accent);color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:1.25rem}
+.chip{padding:3px 11px;border-radius:20px;background:var(--bg3);border:0.5px solid var(--border);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}.chip:hover{border-color:var(--accent);color:var(--accent)}
 
-.hero-h1 {
-  font-family: 'Syne', sans-serif; font-weight: 800;
-  font-size: clamp(3rem, 7vw, 6rem); line-height: 1.0;
-  margin-bottom: 1.5rem; animation: fadeUp 0.6s ease both 0.2s;
-}
-.hero-h1 .line2 { display: block; }
-.hero-h1 em {
-  font-style: normal;
-  background: linear-gradient(130deg, var(--accent) 0%, var(--teal) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* NEWSLETTER */
+.nl-wrap{padding:4rem 2rem;max-width:580px;margin:0 auto;text-align:center}
+.nl-wrap h2{font-family:'Syne',sans-serif;font-size:clamp(1.4rem,2.5vw,1.9rem);font-weight:700;margin-bottom:.55rem}
+.nl-wrap p{font-size:.86rem;color:var(--text2);margin-bottom:1.35rem;line-height:1.7}
+.nlf{display:flex;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--rsm);padding:3px}
+.nlf input{background:transparent;border:none;flex:1;color:var(--text);font-size:.84rem;font-family:'DM Sans',sans-serif;padding:.5rem .75rem;outline:none}
+.nls{padding:.55rem 1.1rem;background:var(--accent);color:#fff;border:none;border-radius:6px;font-weight:600;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;white-space:nowrap}.nls:hover{background:var(--accent2);color:var(--bg)}
 
-.hero-sub {
-  font-size: 1.05rem; color: var(--text2); max-width: 500px;
-  line-height: 1.75; margin-bottom: 2.5rem;
-  animation: fadeUp 0.6s ease both 0.3s;
-}
+/* SERVICES */
+.srv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:11px}
+.srv{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);padding:1.6rem;transition:border-color .25s}.srv:hover{border-color:var(--border2)}
+.srv.feat{border-color:rgba(108,92,231,.4);background:rgba(108,92,231,.04)}
+.sp{font-family:'Syne',sans-serif;font-size:1.55rem;font-weight:800}
+.sp sup{font-size:.9rem;font-weight:600;vertical-align:super}.sp .per{font-size:.78rem;font-weight:400;color:var(--text3)}
+.sn{font-size:.92rem;font-weight:600;margin:.35rem 0 .45rem}.sd{font-size:.78rem;color:var(--text2);line-height:1.6;margin-bottom:1rem}
+.sf{list-style:none;margin-bottom:1.25rem}.sf li{font-size:.76rem;color:var(--text2);padding:3px 0;display:flex;align-items:flex-start;gap:6px}
+.sf li::before{content:'✓';color:var(--teal);font-weight:700;flex-shrink:0}
+.sbtn{display:block;width:100%;padding:.62rem;text-align:center;border-radius:var(--rsm);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;font-family:'DM Sans',sans-serif}
+.sbtn.p{background:var(--accent);color:#fff;border:none}.sbtn.p:hover{background:var(--accent2);color:var(--bg)}
+.sbtn.g{background:transparent;color:var(--text);border:0.5px solid var(--border2)}.sbtn.g:hover{border-color:var(--accent);color:var(--accent)}
 
-.hero-btns { display: flex; gap: 10px; flex-wrap: wrap; animation: fadeUp 0.6s ease both 0.4s; }
-.btn-p {
-  padding: 0.75rem 1.75rem; background: var(--accent); color: #fff;
-  border: none; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600;
-  cursor: pointer; text-decoration: none; transition: all 0.2s;
-  font-family: 'DM Sans', sans-serif;
-}
-.btn-p:hover { background: #8b7cf8; transform: translateY(-2px); box-shadow: 0 8px 24px var(--accent-glow); }
-.btn-g {
-  padding: 0.75rem 1.75rem; background: transparent; color: var(--text);
-  border: 0.5px solid var(--border2); border-radius: var(--radius-sm);
-  font-size: 0.875rem; font-weight: 600; cursor: pointer;
-  text-decoration: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
-}
-.btn-g:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+/* TOP 5 */
+.plats{display:flex;flex-direction:column;gap:11px}
+.plat{display:grid;grid-template-columns:72px 1fr;background:var(--card);border:0.5px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .25s}
+.plat:hover{border-color:var(--border2)}
+.pnum{display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:0.5px solid var(--border);padding:1.2rem 0}
+.pn{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800}.pb{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--text3);margin-top:2px}
+.pbody{padding:1.2rem 1.35rem}
+.ph{display:flex;align-items:center;gap:9px;margin-bottom:.45rem;flex-wrap:wrap}
+.pname{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700}
+.pvis{font-family:'JetBrains Mono',monospace;font-size:.66rem;padding:2px 8px;border-radius:20px}
+.pdesc{font-size:.8rem;color:var(--text2);line-height:1.6;margin-bottom:.9rem}
+.pst{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.ps{border-radius:var(--rsm);padding:.65rem .8rem}
+.ps-t{font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.ps-v{font-size:.76rem;color:var(--text2);line-height:1.5}
+.p-yt .pn{color:#ff4545}.p-yt .pvis{background:rgba(255,69,69,.1);color:#ff6565}.p-yt .ps{background:rgba(255,69,69,.05);border:0.5px solid rgba(255,69,69,.15)}.p-yt .ps-t{color:#ff6565}
+.p-rd .pn{color:#ff6535}.p-rd .pvis{background:rgba(255,101,53,.1);color:#ff7a55}.p-rd .ps{background:rgba(255,101,53,.05);border:0.5px solid rgba(255,101,53,.15)}.p-rd .ps-t{color:#ff7a55}
+.p-tk .pn{color:var(--teal)}.p-tk .pvis{background:rgba(0,205,184,.1);color:var(--teal)}.p-tk .ps{background:rgba(0,205,184,.05);border:0.5px solid rgba(0,205,184,.15)}.p-tk .ps-t{color:var(--teal)}
+.p-li .pn{color:#5baeff}.p-li .pvis{background:rgba(91,174,255,.1);color:#5baeff}.p-li .ps{background:rgba(91,174,255,.05);border:0.5px solid rgba(91,174,255,.15)}.p-li .ps-t{color:#5baeff}
+.p-ai .pn{color:var(--accent)}.p-ai .pvis{background:rgba(108,92,231,.12);color:var(--accent2)}.p-ai .ps{background:rgba(108,92,231,.05);border:0.5px solid rgba(108,92,231,.18)}.p-ai .ps-t{color:var(--accent2)}
 
-.hero-stats {
-  display: flex; gap: 3rem; margin-top: 4.5rem; padding-top: 2.5rem;
-  border-top: 0.5px solid var(--border); flex-wrap: wrap;
-  animation: fadeUp 0.6s ease both 0.5s;
-}
-.stat-v { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; }
-.stat-v span { color: var(--accent); }
-.stat-l { font-size: 0.78rem; color: var(--text3); margin-top: 3px; letter-spacing: 0.02em; }
+/* FOOTER */
+footer{border-top:0.5px solid var(--border);padding:2.75rem 2rem 1.75rem;position:relative;z-index:1}
+.ft{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:2.75rem}
+@media(max-width:620px){.ft{grid-template-columns:1fr;gap:1.75rem}}
+.fb p{font-size:.8rem;color:var(--text2);margin-top:.7rem;line-height:1.65;max-width:260px}
+.fc h4{font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;margin-bottom:.9rem}
+.fc a{display:block;font-size:.78rem;color:var(--text2);text-decoration:none;margin-bottom:.4rem;transition:color .2s}.fc a:hover{color:var(--accent)}
+.ft-bottom{max-width:1120px;margin:1.75rem auto 0;padding-top:1.25rem;border-top:0.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+.ft-bottom p{font-size:.72rem;color:var(--text3)}.ft-bottom span{color:var(--accent)}
 
-/* ─── SECTION SHELL ─── */
-.sec { padding: 5rem 2.5rem; max-width: 1140px; margin: 0 auto; }
-.sec-divider { border: none; border-top: 0.5px solid var(--border); margin: 0 2.5rem; }
-.sec-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--teal); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6rem; }
-.sec-h { font-family: 'Syne', sans-serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; line-height: 1.18; margin-bottom: 2.5rem; }
-.sec-h em { font-style: normal; color: var(--accent); }
+/* ═══════════ AGENTE IA CHAT ═══════════ */
+.chat-fab{position:fixed;bottom:1.75rem;right:1.75rem;z-index:3000;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--teal));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(108,92,231,.45);transition:all .25s;font-size:1.3rem}
+.chat-fab:hover{transform:scale(1.08);box-shadow:0 10px 32px rgba(108,92,231,.55)}
+.chat-badge{position:absolute;top:-3px;right:-3px;width:18px;height:18px;border-radius:50%;background:var(--teal);border:2px solid var(--bg);font-size:.6rem;font-weight:700;color:var(--bg);display:flex;align-items:center;justify-content:center}
+.chat-window{position:fixed;bottom:5.5rem;right:1.75rem;z-index:3000;width:370px;max-width:calc(100vw - 2rem);background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--r);overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5);display:none;flex-direction:column;height:500px}
+.chat-window.open{display:flex}
+.chat-header{padding:.85rem 1rem;background:var(--bg3);border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.chat-agent-info{display:flex;align-items:center;gap:9px}
+.chat-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--teal));display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#fff;font-family:'Syne',sans-serif;flex-shrink:0}
+.chat-agent-name{font-size:.85rem;font-weight:600;font-family:'Syne',sans-serif}
+.chat-agent-status{font-size:.7rem;color:var(--teal);display:flex;align-items:center;gap:4px}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+.chat-close{background:transparent;border:none;cursor:pointer;color:var(--text2);font-size:1rem;padding:4px;transition:color .2s}.chat-close:hover{color:var(--coral)}
+.chat-msgs{flex:1;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.7rem}
+.chat-msgs::-webkit-scrollbar{width:2px}
+.msg{display:flex;gap:7px;align-items:flex-start}
+.msg.user{flex-direction:row-reverse}
+.msg-avatar{width:26px;height:26px;border-radius:50%;background:var(--bg3);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0;color:var(--text2)}
+.msg.bot .msg-avatar{background:linear-gradient(135deg,var(--accent),var(--teal));color:#fff;font-size:.6rem}
+.msg-bubble{max-width:78%;padding:.6rem .85rem;border-radius:10px;font-size:.8rem;line-height:1.6}
+.msg.bot .msg-bubble{background:var(--bg3);border:0.5px solid var(--border);color:var(--text);border-radius:10px 10px 10px 2px}
+.msg.user .msg-bubble{background:var(--accent);color:#fff;border-radius:10px 10px 2px 10px}
+.msg-bubble code{font-family:'JetBrains Mono',monospace;font-size:.72rem;background:rgba(255,255,255,.1);padding:1px 5px;border-radius:3px}
+.typing{display:flex;gap:4px;align-items:center;padding:.4rem .6rem}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--text3);animation:lp 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+.chat-suggestions{padding:.5rem .9rem;display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0}
+.sug{padding:3px 10px;border-radius:20px;background:var(--bg3);border:0.5px solid var(--border);font-size:.7rem;color:var(--text2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.sug:hover{border-color:var(--accent);color:var(--accent)}
+.chat-input-area{padding:.65rem .85rem;border-top:0.5px solid var(--border);display:flex;gap:7px;flex-shrink:0}
+.chat-input{flex:1;background:var(--bg3);border:0.5px solid var(--border);border-radius:20px;padding:.5rem .9rem;color:var(--text);font-size:.8rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:var(--accent)}
+.chat-send{width:34px;height:34px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;font-size:.9rem}
+.chat-send:hover{background:var(--accent2);transform:scale(1.05)}
 
-/* ─── TOPICS ─── */
-.topics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(185px, 1fr)); gap: 10px; }
-.topic-c {
-  background: var(--card); border: 0.5px solid var(--border);
-  border-radius: var(--radius); padding: 1.4rem 1.25rem;
-  cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
-}
-.topic-c::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--teal));
-  transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
-}
-.topic-c:hover { background: var(--card-hover); border-color: var(--border2); transform: translateY(-3px); }
-.topic-c:hover::before { transform: scaleX(1); }
-.topic-icon { font-size: 1.6rem; margin-bottom: 0.75rem; display: block; }
-.topic-name { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.35rem; }
-.topic-desc { font-size: 0.78rem; color: var(--text2); line-height: 1.55; }
-
-/* ─── POSTS ─── */
-.posts-layout { display: grid; grid-template-columns: 5fr 3fr; gap: 14px; }
-@media(max-width:720px){ .posts-layout { grid-template-columns: 1fr; } }
-
-.post-main {
-  background: var(--card); border: 0.5px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
-  transition: all 0.25s; cursor: pointer;
-}
-.post-main:hover { border-color: var(--border2); transform: translateY(-3px); }
-.post-code-banner {
-  background: #0d0d1a; padding: 1.5rem 1.75rem;
-  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
-  line-height: 2; border-bottom: 0.5px solid var(--border);
-  min-height: 130px; display: flex; align-items: center;
-}
-.kw { color: var(--accent); } .fn { color: var(--teal); }
-.str { color: #f9a875; } .cmt { color: var(--text3); }
-.post-body { padding: 1.4rem 1.5rem; }
-
-.pmeta { display: flex; align-items: center; gap: 8px; margin-bottom: 0.65rem; flex-wrap: wrap; }
-.tag {
-  padding: 2px 9px; border-radius: 20px;
-  font-size: 0.68rem; font-weight: 600; font-family: 'JetBrains Mono', monospace;
-}
-.tag-py { background: rgba(0,205,184,0.1); color: var(--teal); }
-.tag-ml { background: rgba(108,92,231,0.12); color: #a89cf8; }
-.tag-sql { background: rgba(255,94,125,0.1); color: var(--coral); }
-.tag-viz { background: rgba(255,165,0,0.1); color: var(--amber); }
-.pdate { font-size: 0.72rem; color: var(--text3); }
-.ptitle { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.5rem; }
-.pexc { font-size: 0.82rem; color: var(--text2); line-height: 1.65; }
-.pfoot {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-top: 1.1rem; padding-top: 1rem; border-top: 0.5px solid var(--border);
-}
-.ptime { font-size: 0.72rem; color: var(--text3); }
-.plink { font-size: 0.78rem; font-weight: 600; color: var(--accent); text-decoration: none; transition: color 0.2s; }
-.plink:hover { color: var(--teal); }
-
-.posts-side { display: flex; flex-direction: column; gap: 10px; }
-.post-s {
-  background: var(--card); border: 0.5px solid var(--border);
-  border-radius: var(--radius); padding: 1.1rem 1.2rem;
-  cursor: pointer; transition: all 0.22s; flex: 1;
-}
-.post-s:hover { border-color: var(--border2); background: var(--card-hover); }
-.post-s .ptitle { font-size: 0.9rem; }
-.post-s .pexc { font-size: 0.78rem; }
-
-/* ─── TOP 5 ─── */
-.plat-list { display: flex; flex-direction: column; gap: 12px; }
-.plat {
-  display: grid; grid-template-columns: 76px 1fr;
-  background: var(--card); border: 0.5px solid var(--border);
-  border-radius: var(--radius); overflow: hidden; transition: border-color 0.25s;
-}
-.plat:hover { border-color: var(--border2); }
-.plat-num {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  border-right: 0.5px solid var(--border); padding: 1.25rem 0;
-}
-.pn { font-family: 'Syne', sans-serif; font-size: 1.75rem; font-weight: 800; }
-.pb { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text3); margin-top: 2px; }
-
-.plat-body { padding: 1.25rem 1.4rem; }
-.ph { display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem; flex-wrap: wrap; }
-.pname { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; }
-.pvis {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
-  padding: 2px 9px; border-radius: 20px;
-}
-.pdesc { font-size: 0.82rem; color: var(--text2); line-height: 1.6; margin-bottom: 1rem; }
-.pstrats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-@media(max-width:540px){ .pstrats { grid-template-columns: 1fr; } }
-.ps { border-radius: var(--radius-sm); padding: 0.7rem 0.85rem; }
-.ps-t { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
-.ps-v { font-size: 0.78rem; color: var(--text2); line-height: 1.5; }
-
-/* Per-platform accents */
-.p-yt .pn { color: #ff4545; }
-.p-yt .pvis { background: rgba(255,69,69,0.1); color: #ff6565; }
-.p-yt .ps { background: rgba(255,69,69,0.05); border: 0.5px solid rgba(255,69,69,0.15); }
-.p-yt .ps-t { color: #ff6565; }
-
-.p-rd .pn { color: #ff6535; }
-.p-rd .pvis { background: rgba(255,101,53,0.1); color: #ff7a55; }
-.p-rd .ps { background: rgba(255,101,53,0.05); border: 0.5px solid rgba(255,101,53,0.15); }
-.p-rd .ps-t { color: #ff7a55; }
-
-.p-tk .pn { color: var(--teal); }
-.p-tk .pvis { background: rgba(0,205,184,0.1); color: var(--teal); }
-.p-tk .ps { background: rgba(0,205,184,0.05); border: 0.5px solid rgba(0,205,184,0.15); }
-.p-tk .ps-t { color: var(--teal); }
-
-.p-li .pn { color: #5baeff; }
-.p-li .pvis { background: rgba(91,174,255,0.1); color: #5baeff; }
-.p-li .ps { background: rgba(91,174,255,0.05); border: 0.5px solid rgba(91,174,255,0.15); }
-.p-li .ps-t { color: #5baeff; }
-
-.p-ai .pn { color: var(--accent); }
-.p-ai .pvis { background: rgba(108,92,231,0.12); color: #a89cf8; }
-.p-ai .ps { background: rgba(108,92,231,0.05); border: 0.5px solid rgba(108,92,231,0.18); }
-.p-ai .ps-t { color: #a89cf8; }
-
-@media(max-width:600px){
-  .plat { grid-template-columns: 1fr; }
-  .plat-num { flex-direction: row; gap: 8px; padding: 0.9rem 1.2rem; border-right: none; border-bottom: 0.5px solid var(--border); justify-content: flex-start; }
-}
-
-/* ─── PROMPT GENERATOR ─── */
-.prompt-wrap {
-  background: var(--bg2); border-top: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border);
-  padding: 5rem 2.5rem;
-}
-.prompt-inner { max-width: 860px; margin: 0 auto; }
-.prompt-head { text-align: center; margin-bottom: 2.75rem; }
-.prompt-head h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 700; margin-bottom: 0.6rem; }
-.prompt-head p { font-size: 0.88rem; color: var(--text2); }
-
-.ctrl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-@media(max-width:560px){ .ctrl-grid { grid-template-columns: 1fr; } }
-.ctrl-full { grid-column: 1 / -1; }
-.clabel { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 5px; }
-
-select, input[type=text] {
-  width: 100%; padding: 0.65rem 0.9rem;
-  background: var(--bg3); border: 0.5px solid var(--border);
-  border-radius: var(--radius-sm); color: var(--text);
-  font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
-  outline: none; transition: border-color 0.2s; appearance: none;
-}
-select:focus, input:focus { border-color: var(--accent); }
-option { background: #171724; }
-
-.gen-btn {
-  width: 100%; padding: 0.9rem;
-  background: linear-gradient(130deg, var(--accent) 0%, #4a3db8 100%);
-  border: none; border-radius: var(--radius-sm); color: #fff;
-  font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700;
-  cursor: pointer; transition: all 0.22s; margin-bottom: 14px;
-  letter-spacing: 0.02em;
-}
-.gen-btn:hover { filter: brightness(1.15); transform: translateY(-2px); box-shadow: 0 10px 30px var(--accent-glow); }
-.gen-btn:active { transform: translateY(0); }
-
-.loader { display: none; align-items: center; gap: 8px; padding: 0.5rem 0; }
-.loader.on { display: flex; }
-.ldot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: lp 1.2s infinite; }
-.ldot:nth-child(2){animation-delay:0.2s} .ldot:nth-child(3){animation-delay:0.4s}
-@keyframes lp{0%,80%,100%{transform:scale(0.5);opacity:0.3}40%{transform:scale(1);opacity:1}}
-.loader span { font-size: 0.8rem; color: var(--text2); }
-
-.out-box {
-  display: none; background: var(--bg3);
-  border: 0.5px solid var(--border); border-radius: var(--radius);
-  padding: 1.25rem 1.4rem;
-}
-.out-box.on { display: block; }
-.out-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 10px; }
-.out-text { font-size: 0.875rem; line-height: 1.85; color: var(--text); white-space: pre-wrap; }
-.out-actions { display: flex; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 0.5px solid var(--border); }
-.cp-btn {
-  padding: 6px 16px; background: var(--accent); color: #fff;
-  border: none; border-radius: 6px; font-size: 0.78rem; font-weight: 600;
-  cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
-}
-.cp-btn:hover { background: #8b7cf8; }
-.rg-btn {
-  padding: 6px 16px; background: transparent; color: var(--text2);
-  border: 0.5px solid var(--border); border-radius: 6px;
-  font-size: 0.78rem; font-weight: 600; cursor: pointer;
-  transition: all 0.2s; font-family: 'DM Sans', sans-serif;
-}
-.rg-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-.chips-wrap { margin-top: 1.5rem; }
-.chips-label { font-size: 0.65rem; font-family: 'JetBrains Mono', monospace; color: var(--text3); letter-spacing: 0.1em; margin-bottom: 10px; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.chip {
-  padding: 4px 13px; border-radius: 20px;
-  background: var(--bg3); border: 0.5px solid var(--border);
-  font-size: 0.75rem; color: var(--text2); cursor: pointer; transition: all 0.2s;
-}
-.chip:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
-
-/* ─── NEWSLETTER ─── */
-.nl-wrap { padding: 4.5rem 2.5rem; max-width: 620px; margin: 0 auto; text-align: center; }
-.nl-wrap h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 700; margin-bottom: 0.6rem; }
-.nl-wrap p { font-size: 0.88rem; color: var(--text2); margin-bottom: 1.5rem; line-height: 1.7; }
-.nl-form {
-  display: flex; background: var(--bg3);
-  border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 4px;
-}
-.nl-form input { background: transparent; border: none; flex: 1; }
-.nl-form input:focus { border: none; }
-.nl-submit {
-  padding: 0.6rem 1.3rem; background: var(--accent); color: #fff;
-  border: none; border-radius: 6px; font-weight: 600; font-size: 0.82rem;
-  cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
-  white-space: nowrap;
-}
-.nl-submit:hover { background: #8b7cf8; }
-
-/* ─── SERVICES ─── */
-.srv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
-.srv {
-  background: var(--card); border: 0.5px solid var(--border);
-  border-radius: var(--radius); padding: 1.75rem; transition: border-color 0.25s;
-}
-.srv:hover { border-color: var(--border2); }
-.srv.featured { border-color: rgba(108,92,231,0.4); background: rgba(108,92,231,0.04); }
-.srv-price { font-family: 'Syne', sans-serif; font-size: 1.65rem; font-weight: 800; }
-.srv-price sup { font-size: 1rem; font-weight: 600; vertical-align: super; }
-.srv-per { font-size: 0.82rem; font-weight: 400; color: var(--text3); }
-.srv-name { font-size: 0.95rem; font-weight: 600; margin: 0.4rem 0 0.5rem; }
-.srv-desc { font-size: 0.8rem; color: var(--text2); line-height: 1.6; margin-bottom: 1.1rem; }
-.srv-feats { list-style: none; margin-bottom: 1.4rem; }
-.srv-feats li { font-size: 0.78rem; color: var(--text2); padding: 3px 0; display: flex; align-items: flex-start; gap: 7px; }
-.srv-feats li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-.srv-btn {
-  display: block; width: 100%; padding: 0.65rem; text-align: center;
-  border-radius: var(--radius-sm); font-size: 0.82rem; font-weight: 600;
-  cursor: pointer; transition: all 0.2s; text-decoration: none;
-  font-family: 'DM Sans', sans-serif;
-}
-.srv-btn.p { background: var(--accent); color: #fff; border: none; }
-.srv-btn.p:hover { background: #8b7cf8; }
-.srv-btn.g { background: transparent; color: var(--text); border: 0.5px solid var(--border2); }
-.srv-btn.g:hover { border-color: var(--accent); color: var(--accent); }
-
-/* ─── FOOTER ─── */
-footer {
-  border-top: 0.5px solid var(--border);
-  padding: 3rem 2.5rem 2rem; position: relative; z-index: 1;
-}
-.ft-inner { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; }
-@media(max-width:640px){ .ft-inner { grid-template-columns: 1fr; gap: 2rem; } }
-.ft-brand p { font-size: 0.82rem; color: var(--text2); margin-top: 0.75rem; line-height: 1.65; max-width: 280px; }
-.ft-col h4 { font-family: 'Syne', sans-serif; font-size: 0.82rem; font-weight: 700; margin-bottom: 1rem; }
-.ft-col a { display: block; font-size: 0.8rem; color: var(--text2); text-decoration: none; margin-bottom: 0.45rem; transition: color 0.2s; }
-.ft-col a:hover { color: var(--accent); }
-.ft-bottom {
-  max-width: 1140px; margin: 2rem auto 0; padding-top: 1.5rem;
-  border-top: 0.5px solid var(--border);
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;
-}
-.ft-bottom p { font-size: 0.75rem; color: var(--text3); }
-.ft-bottom span { color: var(--accent); }
-
-/* ─── ANIMATIONS ─── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ─── RESPONSIVE ─── */
 @media(max-width:768px){
-  nav { padding: 0 1.25rem; }
-  .nav-center { display: none; }
-  #home, .sec { padding-left: 1.25rem; padding-right: 1.25rem; }
-  .hero-stats { gap: 1.75rem; }
-  .prompt-wrap { padding: 3.5rem 1.25rem; }
-  .nl-wrap { padding: 3.5rem 1.25rem; }
-  footer { padding: 2.5rem 1.25rem 1.5rem; }
-  .nl-form { flex-direction: column; }
-  .nl-submit { margin-top: 4px; }
-  .sec-divider { margin: 0 1.25rem; }
+  nav{padding:0 1rem}.nav-links{display:none}
+  #home,.sec{padding-left:1rem;padding-right:1rem}
+  .pg-wrap,.nl-wrap{padding:3rem 1rem}
+  footer{padding:2rem 1rem 1.25rem}
+  .hr{margin:0 1rem}
+  .plat{grid-template-columns:1fr}.pnum{flex-direction:row;gap:8px;padding:.8rem 1rem;border-right:none;border-bottom:0.5px solid var(--border);justify-content:flex-start}
+  .pst{grid-template-columns:1fr}
+  .chat-window{bottom:5rem;right:1rem;width:calc(100vw - 2rem)}
 }
-
-/* ─── SCROLLBAR ─── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 </style>
 </head>
 <body>
-<div class="ambient"></div>
-<div class="grid-lines"></div>
+<div class="amb"></div>
+<div class="grid-bg"></div>
 
 <!-- NAV -->
 <nav>
-  <a href="#home" class="nav-logo"><div class="nav-logo-dot"></div>Data<span>Nova</span></a>
-  <ul class="nav-center">
-    <li><a href="#home" class="active" id="nl-home">Inicio</a></li>
-    <li><a href="#topics" id="nl-topics">Temas</a></li>
-    <li><a href="#posts" id="nl-posts">Artículos</a></li>
-    <li><a href="#top5" id="nl-top5">Plataformas</a></li>
-    <li><a href="#prompts" id="nl-prompts">Generador IA</a></li>
-    <li><a href="#services" id="nl-srv">Servicios</a></li>
+  <a href="#home" class="logo"><div class="logo-dot"></div><span class="logo-bit">Bits</span>&nbsp;&amp;&nbsp;Datos</a>
+  <ul class="nav-links">
+    <li><a href="#home">Inicio</a></li>
+    <li><a href="#about">Autor</a></li>
+    <li><a href="#topics">Temas</a></li>
+    <li><a href="#articles">Artículos</a></li>
+    <li><a href="#top5">Plataformas</a></li>
+    <li><a href="#prompts">Generador IA</a></li>
+    <li><a href="#services">Servicios</a></li>
   </ul>
   <div class="nav-right">
     <div class="lang-pill">
-      <button class="lang-btn active" onclick="setLang('es')">ES</button>
-      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lb on" onclick="setLang('es')">ES</button>
+      <button class="lb" onclick="setLang('en')">EN</button>
     </div>
-    <a href="#newsletter" class="nav-cta" id="nl-navbtn">Suscribirse</a>
+    <a href="#newsletter" class="nav-cta">Suscribirse</a>
   </div>
 </nav>
 
@@ -508,453 +289,1266 @@ footer {
 
 <!-- HERO -->
 <section id="home">
-  <div class="hero-eyebrow"><div class="hero-eyebrow-dot"></div><span id="ey">Data · Análisis · Inteligencia · Prompts</span></div>
-  <h1 class="hero-h1" id="h1a">Transforma datos en<span class="line2"><em id="h1b">decisiones inteligentes.</em></span></h1>
-  <p class="hero-sub" id="hsub">Tutoriales, análisis y recursos sobre Python, SQL, Machine Learning y visualización. Más un generador de prompts para IA especializado en datos.</p>
+  <div class="eyebrow"><div class="edot"></div><span id="ey">Data · SQL · Python · ML · IA · Visualización</span></div>
+  <h1 class="hero" id="h1">Convierte datos en<br><em id="h1e">ventaja competitiva.</em></h1>
+  <p class="hero-sub" id="hsub">Tutoriales de nivel senior, análisis profundos y recursos prácticos sobre data science. En español e inglés, sin relleno.</p>
   <div class="hero-btns">
-    <a href="#posts" class="btn-p" id="hb1">Leer artículos</a>
-    <a href="#prompts" class="btn-g" id="hb2">Generar prompts ↗</a>
+    <a href="#articles" class="bp" id="hb1">Ver artículos</a>
+    <a href="#about" class="bg" id="hb2">Conoce al autor</a>
+    <a href="#prompts" class="bg" id="hb3">Generador de prompts ↗</a>
   </div>
   <div class="hero-stats">
-    <div><div class="stat-v">50<span>+</span></div><div class="stat-l" id="s1">Artículos publicados</div></div>
-    <div><div class="stat-v">5</div><div class="stat-l" id="s2">Plataformas cubieras</div></div>
-    <div><div class="stat-v">2</div><div class="stat-l" id="s3">Idiomas disponibles</div></div>
-    <div><div class="stat-v">8</div><div class="stat-l" id="s4">Tipos de prompts IA</div></div>
+    <div><div class="sv">10<span>+</span></div><div class="sl" id="s1">Artículos Sr publicados</div></div>
+    <div><div class="sv">8</div><div class="sl" id="s2">Tipos de prompts IA</div></div>
+    <div><div class="sv">5</div><div class="sl" id="s3">Tecnologías cubiertas</div></div>
+    <div><div class="sv">2</div><div class="sl" id="s4">Idiomas disponibles</div></div>
   </div>
 </section>
 
-<hr class="sec-divider">
+<hr class="hr">
+
+<!-- ABOUT / AUTOR -->
+<section id="about">
+<div class="sec">
+  <div class="stag" id="abtag">// sobre el autor</div>
+  <div class="sh" id="absh">El cerebro detrás de <em>Bits & Datos</em></div>
+  <div class="about-grid">
+    <div class="author-card">
+      <div class="author-avatar">BD</div>
+      <div class="author-name" id="aname">Alejandro Reyes</div>
+      <div class="author-title" id="atitle">Senior Data Scientist · LATAM</div>
+      <div class="author-bio-short" id="abio">10+ años transformando datos en decisiones de negocio. Especialista en Python, ML y visualización avanzada.</div>
+      <div class="author-tags">
+        <span class="atag">Python</span><span class="atag">SQL</span><span class="atag">ML</span>
+        <span class="atag">Power BI</span><span class="atag">LLMs</span>
+      </div>
+    </div>
+    <div class="about-content">
+      <h3 id="abh3">¿Por qué Bits & Datos?</h3>
+      <p id="abp1">Pasé años buscando recursos de data science en español que fueran realmente profundos, escritos por alguien que ha trabajado con datos reales en empresas reales — no solo traducciones de documentación oficial. No los encontré, así que decidí crearlos.</p>
+      <p id="abp2">Bits & Datos nació como el recurso que yo hubiera necesitado cuando empecé: tutoriales honestos, código que realmente funciona en producción, y análisis que van más allá del "hola mundo" de los datos. Todo lo que publico lo he aplicado en proyectos reales con impacto medible en el negocio.</p>
+      <p id="abp3">He trabajado como Data Scientist en empresas de retail, fintech y salud en México, Colombia y España. He visto cómo los datos bien analizados pueden reducir costos en 30%, predecir la demanda con 95% de precisión y detectar fraude antes de que ocurra. Eso es lo que enseño aquí.</p>
+      <div class="exp-grid">
+        <div class="exp-item"><div class="exp-val">10+</div><div class="exp-label" id="ex1">Años en data science</div></div>
+        <div class="exp-item"><div class="exp-val">15+</div><div class="exp-label" id="ex2">Proyectos en producción</div></div>
+        <div class="exp-item"><div class="exp-val">3</div><div class="exp-label" id="ex3">Países trabajados</div></div>
+        <div class="exp-item"><div class="exp-val">50k+</div><div class="exp-label" id="ex4">Líneas de código en prod</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<hr class="hr">
 
 <!-- TOPICS -->
 <section id="topics">
 <div class="sec">
-  <div class="sec-tag" id="tg1">// temas</div>
-  <div class="sec-h" id="th1">Todo lo que necesitas<br>para <em>dominar los datos</em></div>
+  <div class="stag" id="tgtop">// tecnologías</div>
+  <div class="sh" id="shtop">Todo lo que necesitas<br>para <em>dominar los datos</em></div>
   <div class="topics-grid">
-    <div class="topic-c"><span class="topic-icon">🐍</span><div class="topic-name">Python</div><p class="topic-desc" id="td1">Pandas, NumPy, automatización, APIs y visualización avanzada.</p></div>
-    <div class="topic-c"><span class="topic-icon">🗄️</span><div class="topic-name">SQL</div><p class="topic-desc" id="td2">Consultas, window functions, optimización y bases de datos.</p></div>
-    <div class="topic-c"><span class="topic-icon">📊</span><div class="topic-name">Power BI / Tableau</div><p class="topic-desc" id="td3">Dashboards interactivos, DAX, storytelling con datos.</p></div>
-    <div class="topic-c"><span class="topic-icon">🤖</span><div class="topic-name">Machine Learning</div><p class="topic-desc" id="td4">Modelos predictivos, scikit-learn, evaluación y deployment.</p></div>
-    <div class="topic-c"><span class="topic-icon">🧠</span><div class="topic-name">IA Generativa</div><p class="topic-desc" id="td5">LLMs, prompting avanzado, APIs de IA aplicadas a datos.</p></div>
+    <div class="tc"><span class="tico">🐍</span><div class="tname">Python</div><p class="tdesc" id="td1">Pandas, NumPy, Polars, automatización, APIs y visualización avanzada con Plotly.</p></div>
+    <div class="tc"><span class="tico">🗄️</span><div class="tname">SQL</div><p class="tdesc" id="td2">Desde JOINs básicos hasta window functions, CTEs y optimización de queries en producción.</p></div>
+    <div class="tc"><span class="tico">📊</span><div class="tname">Power BI / Tableau</div><p class="tdesc" id="td3">Dashboards ejecutivos, DAX avanzado, storytelling con datos y RLS.</p></div>
+    <div class="tc"><span class="tico">🤖</span><div class="tname">Machine Learning</div><p class="tdesc" id="td4">Modelos predictivos, scikit-learn, XGBoost, MLOps y deployment en producción.</p></div>
+    <div class="tc"><span class="tico">🧠</span><div class="tname">IA Generativa</div><p class="tdesc" id="td5">LLMs, prompting avanzado, RAG, agentes y APIs de IA aplicadas a data science.</p></div>
   </div>
 </div>
 </section>
 
-<hr class="sec-divider">
+<hr class="hr">
 
-<!-- POSTS -->
-<section id="posts">
+<!-- ARTICLES -->
+<section id="articles">
 <div class="sec">
-  <div class="sec-tag" id="tg2">// artículos</div>
-  <div class="sec-h" id="th2">Últimas <em>publicaciones</em></div>
-  <div class="posts-layout">
-    <div class="post-main">
-      <div class="post-code-banner">
-        <div><span class="cmt"># Análisis exploratorio con Pandas</span><br>
-        <span class="kw">import</span> pandas <span class="kw">as</span> pd<br>
-        <span class="kw">import</span> seaborn <span class="kw">as</span> sns<br><br>
-        df = pd.<span class="fn">read_csv</span>(<span class="str">'ventas.csv'</span>)<br>
-        df.<span class="fn">describe</span>().<span class="fn">style</span>.<span class="fn">background_gradient</span>()</div>
-      </div>
-      <div class="post-body">
-        <div class="pmeta"><span class="tag tag-py">Python</span><span class="pdate" id="pd1">15 Mar 2025</span></div>
-        <h3 class="ptitle" id="pt1">Análisis exploratorio de datos con Pandas: guía completa para principiantes</h3>
-        <p class="pexc" id="pe1">Aprende a limpiar, transformar y visualizar datos reales con Pandas y Seaborn. Con un dataset de ventas real y código listo para ejecutar.</p>
-        <div class="pfoot"><span class="ptime" id="pm1">8 min de lectura</span><a href="#" class="plink" id="pl1">Leer artículo →</a></div>
-      </div>
-    </div>
-    <div class="posts-side">
-      <div class="post-s"><div class="pmeta"><span class="tag tag-sql">SQL</span><span class="pdate">10 Mar 2025</span></div><h3 class="ptitle" id="pt2">10 queries SQL que todo analista debe conocer</h3><p class="pexc" id="pe2">Window functions, CTEs y optimización de consultas con ejemplos reales.</p><div class="pfoot"><span class="ptime">6 min</span><a href="#" class="plink">→</a></div></div>
-      <div class="post-s"><div class="pmeta"><span class="tag tag-ml">ML</span><span class="pdate">5 Mar 2025</span></div><h3 class="ptitle" id="pt3">Tu primer modelo de Machine Learning en 30 minutos</h3><p class="pexc" id="pe3">Regresión logística desde cero con scikit-learn y un dataset real.</p><div class="pfoot"><span class="ptime">10 min</span><a href="#" class="plink">→</a></div></div>
-      <div class="post-s"><div class="pmeta"><span class="tag tag-viz">Power BI</span><span class="pdate">28 Feb 2025</span></div><h3 class="ptitle" id="pt4">Dashboard de ventas en Power BI: paso a paso</h3><p class="pexc" id="pe4">Crea un reporte ejecutivo con DAX y visualizaciones interactivas.</p><div class="pfoot"><span class="ptime">7 min</span><a href="#" class="plink">→</a></div></div>
-    </div>
-  </div>
+  <div class="stag" id="tgart">// artículos · nivel senior</div>
+  <div class="sh" id="shart">Tutoriales <em>profundos</em>, no superficiales</div>
+  <div class="articles-grid" id="articles-grid"></div>
 </div>
 </section>
 
-<hr class="sec-divider">
+<hr class="hr">
 
-<!-- TOP 5 PLATFORMS -->
+<!-- TOP 5 -->
 <section id="top5">
 <div class="sec">
-  <div class="sec-tag" id="tg3">// estrategia · ranking mundial 2025</div>
-  <div class="sec-h" id="th3">Top 5 plataformas para tu<br><em>mix de contenido</em></div>
-  <div class="plat-list">
-
-    <div class="plat p-yt">
-      <div class="plat-num"><div class="pn">#1</div><div class="pb">VIDEO</div></div>
-      <div class="plat-body">
-        <div class="ph"><span class="pname">YouTube</span><span class="pvis">48B visitas/mes</span></div>
-        <p class="pdesc" id="p1d">El segundo motor de búsqueda del mundo. Tutoriales de data tienen millones de búsquedas mensuales. Mayor tiempo de sesión promedio: 20 min por visita.</p>
-        <div class="pstrats">
-          <div class="ps"><div class="ps-t" id="p1c">Contenido data</div><div class="ps-v" id="p1cv">Tutoriales Python, análisis en vivo, reviews de herramientas, proyectos paso a paso</div></div>
-          <div class="ps"><div class="ps-t" id="p1m">Monetización</div><div class="ps-v" id="p1mv">AdSense $3–$8 CPM, membresías, patrocinios de tools de datos y bootcamps</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="plat p-rd">
-      <div class="plat-num"><div class="pn">#2</div><div class="pb">COMUNIDAD</div></div>
-      <div class="plat-body">
-        <div class="ph"><span class="pname">Reddit</span><span class="pvis">1.5B visitas/mes</span></div>
-        <p class="pdesc" id="p2d">Google en 2025 prioriza contenido de Reddit sobre artículos de IA. r/datascience, r/learnpython y r/MachineLearning tienen millones de miembros activos.</p>
-        <div class="pstrats">
-          <div class="ps"><div class="ps-t" id="p2c">Contenido data</div><div class="ps-v" id="p2cv">Análisis originales, responder preguntas técnicas, compartir proyectos, AMAs</div></div>
-          <div class="ps"><div class="ps-t" id="p2m">Monetización</div><div class="ps-v" id="p2mv">Tráfico orgánico → blog → servicios. Afiliados en posts de herramientas</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="plat p-tk">
-      <div class="plat-num"><div class="pn">#3</div><div class="pb">VIRAL</div></div>
-      <div class="plat-body">
-        <div class="ph"><span class="pname">TikTok</span><span class="pvis">1.2B usuarios activos</span></div>
-        <p class="pdesc" id="p3d">"DataTok" es un nicho real y en explosión. Videos de 60–90s explicando conceptos de datos generan millones de vistas. La audiencia joven quiere aprender data rápido.</p>
-        <div class="pstrats">
-          <div class="ps"><div class="ps-t" id="p3c">Contenido data</div><div class="ps-v" id="p3cv">Tips Python en 60s, mitos de IA, visualizaciones sorprendentes, tendencias de datos</div></div>
-          <div class="ps"><div class="ps-t" id="p3m">Monetización</div><div class="ps-v" id="p3mv">Creator Fund, TikTok Shop, links a cursos, patrocinios de SaaS de datos</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="plat p-li">
-      <div class="plat-num"><div class="pn">#4</div><div class="pb">B2B</div></div>
-      <div class="plat-body">
-        <div class="ph"><span class="pname">LinkedIn</span><span class="pvis">1B usuarios · CPM alto</span></div>
-        <p class="pdesc" id="p4d">La plataforma con mejor conversión para servicios B2B. Un post viral de data analytics puede generar 10–50 consultas directas de empresas. Alcance orgánico todavía fuerte.</p>
-        <div class="pstrats">
-          <div class="ps"><div class="ps-t" id="p4c">Contenido data</div><div class="ps-v" id="p4cv">Casos de negocio con datos, insights de industria, carruseles educativos, portafolio</div></div>
-          <div class="ps"><div class="ps-t" id="p4m">Monetización</div><div class="ps-v" id="p4mv">Consultoría directa a empresas, cursos premium, freelance B2B, newsletter de pago</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="plat p-ai">
-      <div class="plat-num"><div class="pn">#5</div><div class="pb">IA · FUTURO</div></div>
-      <div class="plat-body">
-        <div class="ph"><span class="pname">ChatGPT / AI Platforms</span><span class="pvis">1B+ visitas/mes · creciendo</span></div>
-        <p class="pdesc" id="p5d">ChatGPT superó 1B de visitas mensuales en 2025 y sigue creciendo. El contenido sobre IA y prompts para data science es de los más buscados del mundo ahora mismo.</p>
-        <div class="pstrats">
-          <div class="ps"><div class="ps-t" id="p5c">Contenido data</div><div class="ps-v" id="p5cv">Guías de prompts para análisis, GPTs personalizados, automatización, comparativas</div></div>
-          <div class="ps"><div class="ps-t" id="p5m">Monetización</div><div class="ps-v" id="p5mv">GPT Store, cursos de prompting para empresas, consultoría de automatización con IA</div></div>
-        </div>
-      </div>
-    </div>
-
+  <div class="stag" id="tg5">// estrategia · ranking 2025</div>
+  <div class="sh" id="sh5">Top 5 plataformas para<br>tu <em>mix de contenido</em></div>
+  <div class="plats">
+    <div class="plat p-yt"><div class="pnum"><div class="pn">#1</div><div class="pb">VIDEO</div></div><div class="pbody"><div class="ph"><span class="pname">YouTube</span><span class="pvis">48B visitas/mes</span></div><p class="pdesc">El segundo motor de búsqueda del mundo. Tutoriales de data tienen millones de búsquedas. Sesión promedio: 20 min por visita — el mayor de todas las plataformas.</p><div class="pst"><div class="ps"><div class="ps-t">Contenido data</div><div class="ps-v">Tutoriales Python, análisis en vivo, reviews de herramientas, proyectos paso a paso</div></div><div class="ps"><div class="ps-t">Monetización</div><div class="ps-v">AdSense $3–$8 CPM, membresías, patrocinios de bootcamps y tools de datos</div></div></div></div></div>
+    <div class="plat p-rd"><div class="pnum"><div class="pn">#2</div><div class="pb">COMUNIDAD</div></div><div class="pbody"><div class="ph"><span class="pname">Reddit</span><span class="pvis">1.5B visitas/mes</span></div><p class="pdesc">Google en 2025 prioriza contenido de Reddit sobre artículos de IA. r/datascience, r/learnpython y r/MachineLearning tienen millones de miembros activos buscando respuestas.</p><div class="pst"><div class="ps"><div class="ps-t">Contenido data</div><div class="ps-v">Análisis originales, responder preguntas técnicas, compartir proyectos, AMAs</div></div><div class="ps"><div class="ps-t">Monetización</div><div class="ps-v">Tráfico orgánico → blog → servicios. Afiliados en posts de herramientas data</div></div></div></div></div>
+    <div class="plat p-tk"><div class="pnum"><div class="pn">#3</div><div class="pb">VIRAL</div></div><div class="pbody"><div class="ph"><span class="pname">TikTok</span><span class="pvis">1.2B usuarios activos</span></div><p class="pdesc">"DataTok" es un nicho real y en explosión. Videos de 60–90s sobre datos generan millones de vistas. Audiencia joven hambrienta de aprender data rápido.</p><div class="pst"><div class="ps"><div class="ps-t">Contenido data</div><div class="ps-v">Tips Python en 60s, mitos de IA, visualizaciones sorprendentes, tendencias data</div></div><div class="ps"><div class="ps-t">Monetización</div><div class="ps-v">Creator Fund, TikTok Shop, links a cursos, patrocinios de SaaS de datos</div></div></div></div></div>
+    <div class="plat p-li"><div class="pnum"><div class="pn">#4</div><div class="pb">B2B</div></div><div class="pbody"><div class="ph"><span class="pname">LinkedIn</span><span class="pvis">1B usuarios · CPM alto</span></div><p class="pdesc">Mejor conversión para servicios B2B. Un post viral de data analytics puede generar 10–50 consultas directas de empresas. Alcance orgánico todavía fuerte en 2025.</p><div class="pst"><div class="ps"><div class="ps-t">Contenido data</div><div class="ps-v">Casos de negocio con datos, insights de industria, carruseles educativos, portafolio</div></div><div class="ps"><div class="ps-t">Monetización</div><div class="ps-v">Consultoría B2B directa, cursos premium, freelance, newsletter de pago</div></div></div></div></div>
+    <div class="plat p-ai"><div class="pnum"><div class="pn">#5</div><div class="pb">IA · FUTURO</div></div><div class="pbody"><div class="ph"><span class="pname">ChatGPT / AI Platforms</span><span class="pvis">1B+ visitas/mes · creciendo</span></div><p class="pdesc">ChatGPT superó 1B de visitas mensuales en 2025 y sigue creciendo. El contenido sobre prompts para data science es de los más buscados del mundo ahora mismo.</p><div class="pst"><div class="ps"><div class="ps-t">Contenido data</div><div class="ps-v">Guías de prompts para análisis, GPTs personalizados, automatización con IA</div></div><div class="ps"><div class="ps-t">Monetización</div><div class="ps-v">GPT Store, cursos de prompting para empresas, consultoría de automatización</div></div></div></div></div>
   </div>
 </div>
 </section>
 
 <!-- PROMPT GENERATOR -->
-<div id="prompts" class="prompt-wrap">
-  <div class="prompt-inner">
-    <div class="prompt-head">
-      <div class="sec-tag" style="text-align:center;margin-bottom:0.6rem;" id="tg4">// herramienta exclusiva · powered by ia</div>
-      <h2 id="pgh">Generador de Prompts <span style="color:var(--accent)">para Data Science</span></h2>
-      <p id="pgp">Genera prompts optimizados para ChatGPT, Claude o Gemini. Especializados en análisis, código y visualización de datos.</p>
-    </div>
-    <div class="ctrl-grid">
-      <div><div class="clabel" id="cl1">// herramienta ia</div>
-        <select id="ai-sel"><option>ChatGPT (GPT-4)</option><option>Claude (Anthropic)</option><option>Gemini (Google)</option></select></div>
-      <div><div class="clabel" id="cl2">// tipo de prompt</div>
-        <select id="pt-sel">
-          <option value="analisis" id="po1">Análisis de datos</option>
-          <option value="codigo" id="po2">Código Python</option>
-          <option value="sql" id="po3">Consulta SQL</option>
-          <option value="dashboard" id="po4">Diseñar dashboard</option>
-          <option value="ml" id="po5">Modelo ML</option>
-          <option value="viz" id="po6">Visualización</option>
-          <option value="limpieza" id="po7">Limpieza de datos</option>
-          <option value="story" id="po8">Data storytelling</option>
-        </select></div>
-      <div><div class="clabel" id="cl3">// nivel</div>
-        <select id="lv-sel"><option value="p" id="lvo1">Principiante</option><option value="m" id="lvo2">Intermedio</option><option value="a" id="lvo3">Avanzado</option></select></div>
-      <div><div class="clabel" id="cl4">// idioma del prompt</div>
-        <select id="lg-sel"><option value="español">Español</option><option value="inglés">Inglés</option></select></div>
-      <div class="ctrl-full"><div class="clabel" id="cl5">// tu tema o contexto (opcional)</div>
-        <input type="text" id="topic-in" placeholder="ej: ventas de e-commerce, datos de salud, análisis financiero..."></div>
-    </div>
-    <button class="gen-btn" onclick="genPrompt()" id="genbtn">⚡ Generar Prompt Optimizado</button>
-    <div class="loader" id="ldr"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div><span id="ldrtxt">Generando prompt optimizado...</span></div>
-    <div class="out-box" id="outbox">
-      <div class="out-tag" id="outtag">// PROMPT GENERADO · LISTO PARA USAR</div>
-      <div class="out-text" id="outtext"></div>
-      <div class="out-actions">
-        <button class="cp-btn" onclick="copyP()" id="cpbtn">📋 Copiar prompt</button>
-        <button class="rg-btn" onclick="genPrompt()" id="rgbtn">↻ Regenerar</button>
-      </div>
-    </div>
-    <div class="chips-wrap">
-      <div class="chips-label" id="chlbl">// EJEMPLOS RÁPIDOS · CLICK PARA GENERAR</div>
-      <div class="chips">
-        <div class="chip" onclick="quick('analisis','ventas mensuales de retail')">Análisis ventas retail</div>
-        <div class="chip" onclick="quick('codigo','web scraping con BeautifulSoup')">Web scraping Python</div>
-        <div class="chip" onclick="quick('sql','reportes de KPIs de negocio')">SQL para KPIs</div>
-        <div class="chip" onclick="quick('dashboard','métricas de redes sociales')">Dashboard social media</div>
-        <div class="chip" onclick="quick('ml','predicción de churn de clientes')">Predicción de churn</div>
-        <div class="chip" onclick="quick('viz','datos geográficos de LATAM')">Mapa LATAM</div>
-        <div class="chip" onclick="quick('story','resultados para directivos')">Storytelling ejecutivo</div>
-        <div class="chip" onclick="quick('limpieza','datos de clientes con duplicados')">Limpieza de datos</div>
-      </div>
-    </div>
+<div id="prompts" class="pg-wrap">
+<div class="pg-inner">
+  <div class="pg-head">
+    <div class="stag" style="text-align:center;margin-bottom:.5rem">// herramienta exclusiva</div>
+    <h2>Generador de prompts <span style="color:var(--accent)">para data science</span></h2>
+    <p>Prompts optimizados para ChatGPT, Claude o Gemini. Especializados en análisis, código y visualización.</p>
   </div>
+  <div class="cg">
+    <div><div class="cl">// herramienta ia</div><select id="ai-sel"><option>ChatGPT (GPT-4o)</option><option>Claude (Anthropic)</option><option>Gemini (Google)</option></select></div>
+    <div><div class="cl">// tipo de prompt</div>
+      <select id="pt-sel">
+        <option value="analisis">Análisis de datos</option><option value="codigo">Código Python</option>
+        <option value="sql">Consulta SQL</option><option value="dashboard">Diseñar dashboard</option>
+        <option value="ml">Modelo ML</option><option value="viz">Visualización</option>
+        <option value="limpieza">Limpieza de datos</option><option value="story">Data storytelling</option>
+      </select></div>
+    <div><div class="cl">// nivel</div>
+      <select id="lv-sel"><option value="p">Principiante</option><option value="m">Intermedio</option><option value="a">Avanzado</option></select></div>
+    <div><div class="cl">// idioma</div>
+      <select id="lg-sel"><option value="español">Español</option><option value="inglés">Inglés</option></select></div>
+    <div class="cf"><div class="cl">// tema o contexto (opcional)</div>
+      <input type="text" id="topic-in" placeholder="ej: ventas de e-commerce, datos de salud, análisis financiero..."></div>
+  </div>
+  <button class="genbtn" onclick="genPrompt()">⚡ Generar Prompt Optimizado</button>
+  <div class="ld" id="ldr"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div><span>Generando prompt optimizado...</span></div>
+  <div class="outbox" id="outbox">
+    <div class="otag">// PROMPT GENERADO · LISTO PARA USAR</div>
+    <div class="otext" id="otext"></div>
+    <div class="oacts"><button class="cpbtn" onclick="copyP()">📋 Copiar</button><button class="rgbtn" onclick="genPrompt()">↻ Regenerar</button></div>
+  </div>
+  <div class="chips">
+    <div class="chip" onclick="quick('analisis','ventas de retail')">Análisis ventas</div>
+    <div class="chip" onclick="quick('codigo','web scraping')">Web scraping</div>
+    <div class="chip" onclick="quick('sql','KPIs de negocio')">SQL KPIs</div>
+    <div class="chip" onclick="quick('dashboard','métricas de marketing')">Dashboard marketing</div>
+    <div class="chip" onclick="quick('ml','predicción de churn')">Churn prediction</div>
+    <div class="chip" onclick="quick('viz','datos geográficos LATAM')">Mapa LATAM</div>
+    <div class="chip" onclick="quick('story','resultados para directivos')">Storytelling ejecutivo</div>
+  </div>
+</div>
 </div>
 
 <!-- NEWSLETTER -->
-<hr class="sec-divider">
-<div id="newsletter">
-<div class="nl-wrap">
-  <div class="sec-tag" style="text-align:center;margin-bottom:0.75rem;" id="tg5">// newsletter</div>
-  <h2 id="nlh">Únete a la comunidad <span style="color:var(--accent)">DataNova</span></h2>
-  <p id="nlp">Recibe cada semana los mejores tutoriales, datasets, prompts y recursos de data science. Gratis, siempre.</p>
-  <div class="nl-form">
-    <input type="email" id="nl-email" placeholder="tu@email.com">
-    <button class="nl-submit" id="nlbtn">Suscribirse</button>
-  </div>
-</div>
-</div>
+<hr class="hr">
+<div id="newsletter"><div class="nl-wrap">
+  <div class="stag" style="text-align:center;margin-bottom:.6rem">// newsletter semanal</div>
+  <h2>Únete a <span style="color:var(--accent)">Bits & Datos</span></h2>
+  <p>Cada semana: un tutorial profundo, un dataset interesante y un recurso de data science que vale la pena. Sin spam.</p>
+  <div class="nlf"><input type="email" id="nl-em" placeholder="tu@email.com"><button class="nls" onclick="nlSubmit()">Suscribirse</button></div>
+</div></div>
 
-<hr class="sec-divider">
+<hr class="hr">
 
 <!-- SERVICES -->
 <section id="services">
 <div class="sec">
-  <div class="sec-tag" id="tg6">// servicios</div>
-  <div class="sec-h" id="th6">¿Necesitas ayuda<br>con tus <em>datos</em>?</div>
+  <div class="stag">// servicios</div>
+  <div class="sh">¿Necesitas ayuda<br>con tus <em>datos</em>?</div>
   <div class="srv-grid">
-    <div class="srv">
-      <div class="srv-price">Gratis</div>
-      <div class="srv-name" id="sn1">Contenido del Blog</div>
-      <p class="srv-desc" id="sd1">Acceso completo a todos los artículos, tutoriales y el generador de prompts.</p>
-      <ul class="srv-feats"><li id="sf1">Tutoriales Python y SQL</li><li id="sf2">Guías de Power BI</li><li id="sf3">Generador de prompts IA</li><li id="sf4">Newsletter semanal</li></ul>
-      <a href="#posts" class="srv-btn g" id="sb1">Explorar contenido</a>
-    </div>
-    <div class="srv featured">
-      <div class="srv-price"><sup>$</sup>99 <span class="srv-per" id="sp2">/ sesión</span></div>
-      <div class="srv-name" id="sn2">Consultoría 1:1</div>
-      <p class="srv-desc" id="sd2">Sesión privada de 60 minutos para resolver tus dudas de datos o analizar tu negocio.</p>
-      <ul class="srv-feats"><li id="sf5">Sesión de 60 minutos</li><li id="sf6">Revisión de tu código</li><li id="sf7">Recomendaciones personalizadas</li><li id="sf8">Grabación incluida</li></ul>
-      <a href="mailto:hola@datanova.com" class="srv-btn p" id="sb2">Reservar sesión</a>
-    </div>
-    <div class="srv">
-      <div class="srv-price"><sup>$</sup>500 <span class="srv-per" id="sp3">/ proyecto</span></div>
-      <div class="srv-name" id="sn3">Análisis & Dashboards</div>
-      <p class="srv-desc" id="sd3">Análisis completo de tus datos o dashboard profesional en Power BI o Python.</p>
-      <ul class="srv-feats"><li id="sf9">Limpieza y análisis</li><li id="sf10">Dashboard interactivo</li><li id="sf11">Informe ejecutivo</li><li id="sf12">Revisiones incluidas</li></ul>
-      <a href="mailto:hola@datanova.com" class="srv-btn g" id="sb3">Solicitar cotización</a>
-    </div>
+    <div class="srv"><div class="sp">Gratis</div><div class="sn">Blog + Herramientas</div><p class="sd">Acceso completo a todos los artículos, tutoriales y el generador de prompts. Sin registro.</p><ul class="sf"><li>10+ tutoriales Sr completos</li><li>Generador de prompts IA</li><li>Top 5 estrategia de plataformas</li><li>Newsletter semanal</li></ul><a href="#articles" class="sbtn g">Explorar contenido</a></div>
+    <div class="srv feat"><div class="sp"><sup>$</sup>99 <span class="per">/ sesión</span></div><div class="sn">Consultoría 1:1</div><p class="sd">Sesión privada de 60 minutos. Revisión de código, arquitectura de datos o análisis de tu negocio.</p><ul class="sf"><li>Sesión de 60 minutos por video</li><li>Revisión de tu código real</li><li>Recomendaciones personalizadas</li><li>Grabación de la sesión</li></ul><a href="mailto:contacto@bitsdatos.com" class="sbtn p">Reservar sesión</a></div>
+    <div class="srv"><div class="sp"><sup>$</sup>500 <span class="per">/ proyecto</span></div><div class="sn">Análisis & Dashboard</div><p class="sd">Entrego un análisis completo de tus datos o un dashboard profesional listo para presentar.</p><ul class="sf"><li>Limpieza y análisis exploratorio</li><li>Dashboard interactivo en Power BI</li><li>Informe ejecutivo en PDF</li><li>2 rondas de revisiones</li></ul><a href="mailto:contacto@bitsdatos.com" class="sbtn g">Solicitar cotización</a></div>
   </div>
 </div>
 </section>
 
-</div><!-- end .page -->
+</div><!-- .page -->
 
 <!-- FOOTER -->
 <footer>
-  <div class="ft-inner">
-    <div class="ft-brand">
-      <a href="#home" class="nav-logo" style="font-size:1.2rem;"><div class="nav-logo-dot"></div>Data<span>Nova</span></a>
-      <p id="fdesc">Blog de data science en español e inglés. Tutoriales, análisis, prompts y consultoría para profesionales de datos en LATAM y el mundo.</p>
+  <div class="ft">
+    <div class="fb">
+      <a href="#home" class="logo" style="font-size:1.1rem"><div class="logo-dot"></div><span class="logo-bit">Bits</span>&nbsp;&amp;&nbsp;Datos</a>
+      <p>Data science sin relleno. Tutoriales Sr en español e inglés para profesionales que quieren ir más allá del básico.</p>
     </div>
-    <div class="ft-col">
-      <h4 id="fc1h">Contenido</h4>
-      <a href="#topics">Python</a><a href="#topics">SQL</a>
-      <a href="#topics">Machine Learning</a><a href="#topics">Power BI</a>
-      <a href="#prompts" id="fc1p">Generador de Prompts</a>
-    </div>
-    <div class="ft-col">
-      <h4 id="fc2h">Contacto</h4>
-      <a href="mailto:hola@datanova.com">hola@datanova.com</a>
-      <a href="#">LinkedIn</a><a href="#">YouTube</a><a href="#">GitHub</a>
-    </div>
+    <div class="fc"><h4>Contenido</h4><a href="#articles">Artículos</a><a href="#topics">Python</a><a href="#topics">SQL & Bases de datos</a><a href="#topics">Machine Learning</a><a href="#prompts">Generador de Prompts</a></div>
+    <div class="fc"><h4>Contacto</h4><a href="mailto:contacto@bitsdatos.com">contacto@bitsdatos.com</a><a href="#">LinkedIn</a><a href="#">GitHub</a><a href="#">YouTube</a></div>
   </div>
-  <div class="ft-bottom">
-    <p id="fcp">© 2025 <span>DataNova</span> · Hecho con datos y café ☕</p>
-    <p id="fcr">Todos los derechos reservados.</p>
-  </div>
+  <div class="ft-bottom"><p>© 2025 <span>Bits & Datos</span> · Hecho con Python y mucho café ☕</p><p style="color:var(--text3);font-size:.7rem">Todos los derechos reservados.</p></div>
 </footer>
 
+<!-- MODAL ARTÍCULO -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-tag" id="m-tag"></div>
+    <h1 class="modal-title" id="m-title"></h1>
+    <div class="modal-meta" id="m-meta"></div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<!-- CHAT AGENTE IA -->
+<button class="chat-fab" onclick="toggleChat()" title="Pregunta al asistente de datos">🤖<div class="chat-badge">Sr</div></button>
+<div class="chat-window" id="chat-win">
+  <div class="chat-header">
+    <div class="chat-agent-info">
+      <div class="chat-avatar">BD</div>
+      <div><div class="chat-agent-name">Asistente Bits & Datos</div><div class="chat-agent-status"><div class="status-dot"></div>Data Scientist Sr · en línea</div></div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <div class="chat-suggestions" id="chat-sugs">
+    <div class="sug" onclick="askSug(this)">¿Cómo empezar con Python?</div>
+    <div class="sug" onclick="askSug(this)">SQL vs Python para análisis</div>
+    <div class="sug" onclick="askSug(this)">¿Qué es un modelo ML?</div>
+    <div class="sug" onclick="askSug(this)">Cómo monetizar mis datos</div>
+  </div>
+  <div class="chat-input-area">
+    <input class="chat-input" id="chat-in" placeholder="Pregunta sobre datos, Python, SQL, ML..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
 <script>
-// ── LANGUAGE ──
-const T = {
-es:{
-  ey:'Data · Análisis · Inteligencia · Prompts',
-  h1a:'Transforma datos en', h1b:'decisiones inteligentes.',
-  hsub:'Tutoriales, análisis y recursos sobre Python, SQL, Machine Learning y visualización. Más un generador de prompts para IA especializado en datos.',
-  hb1:'Leer artículos', hb2:'Generar prompts ↗',
-  s1:'Artículos publicados', s2:'Plataformas cubiertas', s3:'Idiomas disponibles', s4:'Tipos de prompts IA',
-  'nl-home':'Inicio','nl-topics':'Temas','nl-posts':'Artículos','nl-top5':'Plataformas','nl-prompts':'Generador IA','nl-srv':'Servicios','nl-navbtn':'Suscribirse',
-  tg1:'// temas', th1:'Todo lo que necesitas<br>para <em>dominar los datos</em>',
-  td1:'Pandas, NumPy, automatización, APIs y visualización avanzada.',
-  td2:'Consultas, window functions, optimización y bases de datos.',
-  td3:'Dashboards interactivos, DAX, storytelling con datos.',
-  td4:'Modelos predictivos, scikit-learn, evaluación y deployment.',
-  td5:'LLMs, prompting avanzado, APIs de IA aplicadas a datos.',
-  tg2:'// artículos', th2:'Últimas <em>publicaciones</em>',
-  pd1:'15 Mar 2025',
-  pt1:'Análisis exploratorio de datos con Pandas: guía completa para principiantes',
-  pe1:'Aprende a limpiar, transformar y visualizar datos reales con Pandas y Seaborn. Con un dataset de ventas real y código listo para ejecutar.',
-  pm1:'8 min de lectura', pl1:'Leer artículo →',
-  pt2:'10 queries SQL que todo analista debe conocer', pe2:'Window functions, CTEs y optimización de consultas con ejemplos reales.',
-  pt3:'Tu primer modelo de Machine Learning en 30 minutos', pe3:'Regresión logística desde cero con scikit-learn y un dataset real.',
-  pt4:'Dashboard de ventas en Power BI: paso a paso', pe4:'Crea un reporte ejecutivo con DAX y visualizaciones interactivas.',
-  tg3:'// estrategia · ranking mundial 2025', th3:'Top 5 plataformas para tu<br><em>mix de contenido</em>',
-  p1d:'El segundo motor de búsqueda del mundo. Tutoriales de data tienen millones de búsquedas mensuales. Mayor tiempo de sesión promedio: 20 min por visita.',
-  p1c:'Contenido data', p1cv:'Tutoriales Python, análisis en vivo, reviews de herramientas, proyectos paso a paso',
-  p1m:'Monetización', p1mv:'AdSense $3–$8 CPM, membresías, patrocinios de tools de datos y bootcamps',
-  p2d:'Google en 2025 prioriza contenido de Reddit sobre artículos de IA. r/datascience y r/MachineLearning tienen millones de miembros activos.',
-  p2c:'Contenido data', p2cv:'Análisis originales, responder preguntas técnicas, compartir proyectos, AMAs',
-  p2m:'Monetización', p2mv:'Tráfico orgánico → blog → servicios. Afiliados en posts de herramientas',
-  p3d:'"DataTok" es un nicho real y en explosión. Videos de 60–90s explicando conceptos de datos generan millones de vistas.',
-  p3c:'Contenido data', p3cv:'Tips Python en 60s, mitos de IA, visualizaciones sorprendentes, tendencias de datos',
-  p3m:'Monetización', p3mv:'Creator Fund, TikTok Shop, links a cursos, patrocinios de SaaS de datos',
-  p4d:'La plataforma con mejor conversión para servicios B2B. Un post viral de data analytics puede generar 10–50 consultas directas de empresas.',
-  p4c:'Contenido data', p4cv:'Casos de negocio con datos, insights de industria, carruseles educativos, portafolio',
-  p4m:'Monetización', p4mv:'Consultoría directa a empresas, cursos premium, freelance B2B, newsletter de pago',
-  p5d:'ChatGPT superó 1B de visitas mensuales en 2025 y sigue creciendo. El contenido sobre prompts para data science es de los más buscados del mundo.',
-  p5c:'Contenido data', p5cv:'Guías de prompts para análisis, GPTs personalizados, automatización, comparativas',
-  p5m:'Monetización', p5mv:'GPT Store, cursos de prompting para empresas, consultoría de automatización con IA',
-  tg4:'// herramienta exclusiva · powered by ia',
-  pgh:'Generador de Prompts <span style="color:var(--accent)">para Data Science</span>',
-  pgp:'Genera prompts optimizados para ChatGPT, Claude o Gemini. Especializados en análisis, código y visualización de datos.',
-  cl1:'// herramienta ia', cl2:'// tipo de prompt', cl3:'// nivel', cl4:'// idioma del prompt', cl5:'// tu tema o contexto (opcional)',
-  po1:'Análisis de datos',po2:'Código Python',po3:'Consulta SQL',po4:'Diseñar dashboard',po5:'Modelo ML',po6:'Visualización',po7:'Limpieza de datos',po8:'Data storytelling',
-  lvo1:'Principiante', lvo2:'Intermedio', lvo3:'Avanzado',
-  genbtn:'⚡ Generar Prompt Optimizado', ldrtxt:'Generando prompt optimizado...',
-  outtag:'// PROMPT GENERADO · LISTO PARA USAR', cpbtn:'📋 Copiar prompt', rgbtn:'↻ Regenerar',
-  chlbl:'// EJEMPLOS RÁPIDOS · CLICK PARA GENERAR',
-  tg5:'// newsletter', nlh:'Únete a la comunidad <span style="color:var(--accent)">DataNova</span>',
-  nlp:'Recibe cada semana los mejores tutoriales, datasets, prompts y recursos de data science. Gratis, siempre.',
-  nlbtn:'Suscribirse',
-  tg6:'// servicios', th6:'¿Necesitas ayuda<br>con tus <em>datos</em>?',
-  sn1:'Contenido del Blog', sd1:'Acceso completo a todos los artículos, tutoriales y el generador de prompts.',
-  sf1:'Tutoriales Python y SQL', sf2:'Guías de Power BI', sf3:'Generador de prompts IA', sf4:'Newsletter semanal', sb1:'Explorar contenido',
-  sp2:'/ sesión', sn2:'Consultoría 1:1', sd2:'Sesión privada de 60 minutos para resolver tus dudas de datos o analizar tu negocio.',
-  sf5:'Sesión de 60 minutos', sf6:'Revisión de tu código', sf7:'Recomendaciones personalizadas', sf8:'Grabación incluida', sb2:'Reservar sesión',
-  sp3:'/ proyecto', sn3:'Análisis & Dashboards', sd3:'Análisis completo de tus datos o dashboard profesional en Power BI o Python.',
-  sf9:'Limpieza y análisis', sf10:'Dashboard interactivo', sf11:'Informe ejecutivo', sf12:'Revisiones incluidas', sb3:'Solicitar cotización',
-  fc1h:'Contenido', fc1p:'Generador de Prompts', fc2h:'Contacto',
-  fdesc:'Blog de data science en español e inglés. Tutoriales, análisis, prompts y consultoría para profesionales de datos en LATAM y el mundo.',
-  fcp:'© 2025 <span>DataNova</span> · Hecho con datos y café ☕', fcr:'Todos los derechos reservados.'
+// ══════════════════════════════════════════
+// ARTICLES DATA — 10 artículos Sr completos
+// ══════════════════════════════════════════
+const ARTICLES = [
+{id:1,tag:'t-py',tagLabel:'Python',date:'8 Abr 2025',min:'12 min',
+title:'Pandas en producción: técnicas que ningún tutorial te enseña',
+excerpt:'Más allá del read_csv(). Aprende chunking, dtypes optimizados, eval() y query() para datasets de millones de filas sin que tu servidor explote.',
+code:`<span class="cm"># Optimización de memoria en Pandas</span>
+<span class="kw">def</span> <span class="fn">optimize_dtypes</span>(df):
+    <span class="kw">for</span> col <span class="kw">in</span> df.select_dtypes(<span class="str">'object'</span>):
+        <span class="kw">if</span> df[col].nunique() / <span class="fn">len</span>(df) < <span class="str">0.5</span>:
+            df[col] = df[col].<span class="fn">astype</span>(<span class="str">'category'</span>)
+    <span class="kw">return</span> df`,
+content:`
+<h2>¿Por qué Pandas "en producción" es diferente?</h2>
+<p>En tutoriales siempre trabajamos con datasets de 1,000 filas que cargan en milisegundos. La realidad es diferente: en producción tienes millones de registros, memoria limitada y usuarios esperando resultados. Este artículo cubre las técnicas que separan a un analista de un Data Scientist Sr.</p>
+
+<h2>1. Optimización de tipos de datos (dtypes)</h2>
+<p>El error más costoso que veo en equipos de datos: cargar todo como <code>object</code> y <code>float64</code>. Pandas asigna 64 bits por defecto a cada número, cuando muchas veces 8 o 16 son suficientes.</p>
+<pre>import pandas as pd
+import numpy as np
+
+def optimize_dtypes(df):
+    """Reduce el uso de memoria hasta en un 70%"""
+    # Strings con baja cardinalidad → categorías
+    for col in df.select_dtypes('object'):
+        if df[col].nunique() / len(df) < 0.5:
+            df[col] = df[col].astype('category')
+    
+    # Enteros: usa el tipo más pequeño posible
+    for col in df.select_dtypes('int64'):
+        df[col] = pd.to_numeric(df[col], downcast='integer')
+    
+    # Floats: de 64 a 32 bits
+    for col in df.select_dtypes('float64'):
+        df[col] = df[col].astype('float32')
+    
+    return df
+
+# Ejemplo real
+df = pd.read_csv('ventas_2024.csv')
+print(f"Antes: {df.memory_usage(deep=True).sum() / 1e6:.1f} MB")
+df = optimize_dtypes(df)
+print(f"Después: {df.memory_usage(deep=True).sum() / 1e6:.1f} MB")</pre>
+
+<div class="tip"><strong>💡 Resultado real:</strong> En un dataset de ventas con 5M de filas, esta función redujo el uso de memoria de 1.2GB a 340MB — una reducción del 72%.</div>
+
+<h2>2. Procesamiento por chunks para archivos enormes</h2>
+<p>Si el archivo no cabe en memoria, no lo cargues completo. Usa chunks:</p>
+<pre>def procesar_por_chunks(filepath, chunk_size=100_000):
+    resultados = []
+    
+    for chunk in pd.read_csv(filepath, chunksize=chunk_size):
+        # Procesamos cada bloque independientemente
+        chunk = optimize_dtypes(chunk)
+        resultado = chunk.groupby('categoria')['ventas'].sum()
+        resultados.append(resultado)
+    
+    # Combinamos todos los resultados
+    return pd.concat(resultados).groupby(level=0).sum()</pre>
+
+<h2>3. query() y eval() en vez de boolean indexing</h2>
+<p>Para filtros complejos, <code>query()</code> es hasta 3x más rápido que el indexado booleano tradicional:</p>
+<pre># Lento (crea arrays intermedios)
+mask = (df['ventas'] > 1000) & (df['region'] == 'CDMX') & (df['año'] == 2024)
+resultado = df[mask]
+
+# Rápido (usa numexpr internamente)
+resultado = df.query("ventas > 1000 and region == 'CDMX' and año == 2024")</pre>
+
+<h2>4. Operaciones vectorizadas vs. apply()</h2>
+<p><code>apply()</code> es un bucle disfrazado. Úsalo solo cuando no hay alternativa vectorizada.</p>
+<pre># Mal: apply() con función Python (lento)
+df['descuento'] = df['precio'].apply(lambda x: x * 0.15 if x > 100 else x * 0.05)
+
+# Bien: vectorizado con np.where (100x más rápido)
+df['descuento'] = np.where(df['precio'] > 100, df['precio'] * 0.15, df['precio'] * 0.05)</pre>
+
+<h2>Conclusión</h2>
+<p>La diferencia entre código que funciona en un notebook y código que sobrevive en producción está en estos detalles. Optimiza dtypes desde el inicio, procesa en chunks cuando sea necesario, y evita <code>apply()</code> como hábito. Tu equipo de infraestructura te lo agradecerá.</p>`
 },
-en:{
-  ey:'Data · Analysis · Intelligence · Prompts',
-  h1a:'Turn data into', h1b:'intelligent decisions.',
-  hsub:'Tutorials, analysis and resources on Python, SQL, Machine Learning and visualization. Plus an AI prompt generator specialized in data.',
-  hb1:'Read articles', hb2:'Generate prompts ↗',
-  s1:'Articles published', s2:'Platforms covered', s3:'Languages available', s4:'AI prompt types',
-  'nl-home':'Home','nl-topics':'Topics','nl-posts':'Articles','nl-top5':'Platforms','nl-prompts':'AI Generator','nl-srv':'Services','nl-navbtn':'Subscribe',
-  tg1:'// topics', th1:'Everything you need<br>to <em>master data</em>',
-  td1:'Pandas, NumPy, automation, APIs and advanced visualization.',
-  td2:'Queries, window functions, optimization and databases.',
-  td3:'Interactive dashboards, DAX, data storytelling.',
-  td4:'Predictive models, scikit-learn, evaluation and deployment.',
-  td5:'LLMs, advanced prompting, AI APIs applied to data.',
-  tg2:'// articles', th2:'Latest <em>posts</em>',
-  pd1:'Mar 15, 2025',
-  pt1:'Exploratory Data Analysis with Pandas: complete guide for beginners',
-  pe1:'Learn to clean, transform and visualize real data with Pandas and Seaborn. With a real sales dataset and ready-to-run code.',
-  pm1:'8 min read', pl1:'Read article →',
-  pt2:'10 SQL queries every analyst must know', pe2:'Window functions, CTEs and query optimization with real examples.',
-  pt3:'Your first Machine Learning model in 30 minutes', pe3:'Logistic regression from scratch with scikit-learn and a real dataset.',
-  pt4:'Sales dashboard in Power BI: step by step', pe4:'Build an executive report from scratch with DAX and interactive visualizations.',
-  tg3:'// strategy · global ranking 2025', th3:'Top 5 platforms for your<br><em>content mix</em>',
-  p1d:"The world's second search engine. Data tutorials get millions of monthly searches. Highest average session time: 20 min per visit.",
-  p1c:'Data content', p1cv:'Python tutorials, live analysis, tool reviews, step-by-step projects',
-  p1m:'Monetization', p1mv:'AdSense $3–$8 CPM, memberships, sponsorships from data tools and bootcamps',
-  p2d:'Google in 2025 prioritizes Reddit content over AI-generated articles. r/datascience and r/MachineLearning have millions of active members.',
-  p2c:'Data content', p2cv:'Original analysis, answering technical questions, sharing projects, AMAs',
-  p2m:'Monetization', p2mv:'Organic traffic → blog → services. Affiliate links in tool posts',
-  p3d:'"DataTok" is a real and exploding niche. 60–90s videos explaining data concepts get millions of views.',
-  p3c:'Data content', p3cv:'Python tips in 60s, AI myths, stunning visualizations, data trends',
-  p3m:'Monetization', p3mv:'Creator Fund, TikTok Shop, links to courses, data SaaS sponsorships',
-  p4d:'The best converting platform for B2B services. A viral data analytics post can generate 10–50 direct business inquiries.',
-  p4c:'Data content', p4cv:'Business cases with data, industry insights, educational carousels, portfolio',
-  p4m:'Monetization', p4mv:'Direct business consulting, premium courses, B2B freelance, paid newsletter',
-  p5d:'ChatGPT surpassed 1B monthly visits in 2025 and keeps growing. Content about prompts for data science is among the most searched topics worldwide.',
-  p5c:'Data content', p5cv:'Prompt guides for analysis, custom GPTs, automation, model comparisons',
-  p5m:'Monetization', p5mv:'GPT Store, prompting courses for businesses, AI automation consulting',
-  tg4:'// exclusive tool · powered by ai',
-  pgh:'AI Prompt Generator <span style="color:var(--accent)">for Data Science</span>',
-  pgp:'Generate optimized prompts for ChatGPT, Claude or Gemini. Specialized in data analysis, code and visualization.',
-  cl1:'// ai tool', cl2:'// prompt type', cl3:'// level', cl4:'// prompt language', cl5:'// your topic or context (optional)',
-  po1:'Data analysis',po2:'Python code',po3:'SQL query',po4:'Design dashboard',po5:'ML model',po6:'Visualization',po7:'Data cleaning',po8:'Data storytelling',
-  lvo1:'Beginner', lvo2:'Intermediate', lvo3:'Advanced',
-  genbtn:'⚡ Generate Optimized Prompt', ldrtxt:'Generating optimized prompt...',
-  outtag:'// GENERATED PROMPT · READY TO USE', cpbtn:'📋 Copy prompt', rgbtn:'↻ Regenerate',
-  chlbl:'// QUICK EXAMPLES · CLICK TO GENERATE',
-  tg5:'// newsletter', nlh:'Join the <span style="color:var(--accent)">DataNova</span> community',
-  nlp:'Get the best data science tutorials, datasets, prompts and resources every week. Free, always.',
-  nlbtn:'Subscribe',
-  tg6:'// services', th6:'Need help<br>with your <em>data</em>?',
-  sn1:'Blog Content', sd1:'Full access to all articles, tutorials and the AI prompt generator.',
-  sf1:'Python & SQL tutorials', sf2:'Power BI guides', sf3:'AI prompt generator', sf4:'Weekly newsletter', sb1:'Explore content',
-  sp2:'/ session', sn2:'1:1 Consulting', sd2:'Private 60-minute session to solve your data questions or analyze your business.',
-  sf5:'60-minute session', sf6:'Code review', sf7:'Personalized recommendations', sf8:'Recording included', sb2:'Book a session',
-  sp3:'/ project', sn3:'Analysis & Dashboards', sd3:'Complete data analysis or professional dashboard in Power BI or Python.',
-  sf9:'Data cleaning & analysis', sf10:'Interactive dashboard', sf11:'Executive report', sf12:'Revisions included', sb3:'Request a quote',
-  fc1h:'Content', fc1p:'Prompt Generator', fc2h:'Contact',
-  fdesc:'Data science blog in Spanish and English. Tutorials, analysis, prompts and consulting for data professionals in LATAM and worldwide.',
-  fcp:'© 2025 <span>DataNova</span> · Made with data and coffee ☕', fcr:'All rights reserved.'
-}};
+{id:2,tag:'t-sql',tagLabel:'SQL',date:'1 Abr 2025',min:'10 min',
+title:'Window Functions: el arma secreta de los analistas Sr',
+excerpt:'ROW_NUMBER, RANK, LAG, LEAD, NTILE y más. Aprende cuándo y cómo usar cada window function con casos de negocio reales.',
+code:`<span class="cm">-- Ranking de ventas por región</span>
+<span class="kw">SELECT</span> vendedor, region, ventas,
+  <span class="fn">RANK</span>() <span class="kw">OVER</span> (
+    <span class="kw">PARTITION BY</span> region
+    <span class="kw">ORDER BY</span> ventas <span class="kw">DESC</span>
+  ) <span class="kw">AS</span> ranking_regional
+<span class="kw">FROM</span> ventas_2024`,
+content:`
+<h2>¿Qué son las Window Functions?</h2>
+<p>Las window functions son operaciones que calculan un valor para cada fila basándose en un conjunto de filas relacionadas (la "ventana"), sin colapsar el resultado como hace GROUP BY. Son la herramienta más poderosa de SQL que la mayoría de analistas subutiliza.</p>
 
-function setLang(lang){
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
-  const t=T[lang];
-  for(const[id,val] of Object.entries(t)){
-    const el=document.getElementById(id); if(!el) continue;
-    if(el.tagName==='INPUT'&&el.type==='email') el.placeholder=val;
-    else if(el.tagName==='BUTTON'||el.tagName==='A') el.innerHTML=val;
-    else if(el.tagName==='OPTION') el.textContent=val;
-    else el.innerHTML=val;
-  }
-  document.getElementById('topic-in').placeholder = lang==='es'?'ej: ventas de e-commerce, datos de salud, análisis financiero...':'e.g. e-commerce sales, health data, financial analysis...';
-  document.getElementById('nl-email').placeholder = lang==='es'?'tu@email.com':'your@email.com';
+<h2>Sintaxis base</h2>
+<pre>FUNCION() OVER (
+    PARTITION BY columna_agrupación    -- opcional: define la "ventana"
+    ORDER BY columna_orden             -- opcional: define el orden dentro de la ventana
+    ROWS/RANGE BETWEEN ... AND ...     -- opcional: define el tamaño de la ventana
+)</pre>
+
+<h2>ROW_NUMBER, RANK y DENSE_RANK</h2>
+<p>Las tres asignan números de fila, pero difieren en cómo manejan empates:</p>
+<pre>SELECT 
+    vendedor,
+    ventas,
+    ROW_NUMBER() OVER (ORDER BY ventas DESC) AS row_num,    -- 1,2,3,4,5
+    RANK()       OVER (ORDER BY ventas DESC) AS rank_num,   -- 1,2,2,4,5 (salta)
+    DENSE_RANK() OVER (ORDER BY ventas DESC) AS dense_rank  -- 1,2,2,3,4 (no salta)
+FROM ventas;</pre>
+
+<div class="tip"><strong>💡 Caso de uso real:</strong> ¿Quieres el top 3 de vendedores por región? ROW_NUMBER con PARTITION BY es tu mejor opción para eliminar duplicados.</div>
+
+<h2>LAG y LEAD: comparar con periodos anteriores</h2>
+<pre>-- Crecimiento mes a mes
+SELECT 
+    mes,
+    ventas,
+    LAG(ventas, 1) OVER (ORDER BY mes) AS ventas_mes_anterior,
+    ventas - LAG(ventas, 1) OVER (ORDER BY mes) AS variacion,
+    ROUND(100.0 * (ventas - LAG(ventas,1) OVER (ORDER BY mes)) 
+          / LAG(ventas,1) OVER (ORDER BY mes), 2) AS pct_cambio
+FROM ventas_mensuales;</pre>
+
+<h2>Promedio móvil con ROWS BETWEEN</h2>
+<pre>-- Promedio móvil de 7 días (muy común en análisis de series temporales)
+SELECT 
+    fecha,
+    ventas,
+    AVG(ventas) OVER (
+        ORDER BY fecha
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS promedio_7dias
+FROM ventas_diarias;</pre>
+
+<h2>NTILE: dividir en cuartiles o percentiles</h2>
+<pre>-- Clasificar clientes en cuartiles por valor de compra
+SELECT 
+    cliente_id,
+    total_compras,
+    NTILE(4) OVER (ORDER BY total_compras) AS cuartil,
+    CASE NTILE(4) OVER (ORDER BY total_compras)
+        WHEN 4 THEN 'Premium'
+        WHEN 3 THEN 'Alto'
+        WHEN 2 THEN 'Medio'
+        ELSE 'Bajo'
+    END AS segmento
+FROM clientes;</pre>
+
+<h2>Conclusión</h2>
+<p>Las window functions eliminan subconsultas complejas y hacen tu SQL más legible y eficiente. Si dominas estas 6 funciones — ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD y NTILE — estarás en el top 10% de analistas SQL.</p>`
+},
+{id:3,tag:'t-ml',tagLabel:'Machine Learning',date:'25 Mar 2025',min:'15 min',
+title:'XGBoost explicado sin matemáticas: de la teoría al deployment',
+excerpt:'Entiende por qué XGBoost gana casi todas las competiciones de Kaggle, cómo tunearlo correctamente y cómo desplegarlo en producción con FastAPI.',
+code:`<span class="kw">from</span> xgboost <span class="kw">import</span> XGBClassifier
+<span class="kw">import</span> optuna
+
+<span class="kw">def</span> <span class="fn">objective</span>(trial):
+    params = {<span class="str">'max_depth'</span>: trial.<span class="fn">suggest_int</span>(<span class="str">'max_depth'</span>,3,8),
+              <span class="str">'learning_rate'</span>: trial.<span class="fn">suggest_float</span>(<span class="str">'lr'</span>,0.01,0.3)}
+    <span class="kw">return</span> <span class="fn">cross_val_score</span>(XGBClassifier(**params), X, y).<span class="fn">mean</span>()`,
+content:`
+<h2>¿Qué hace especial a XGBoost?</h2>
+<p>XGBoost (Extreme Gradient Boosting) ha dominado Kaggle por años. La razón: combina la potencia de los árboles de decisión con el poder del gradient boosting, pero optimizado al extremo en velocidad y regularización. Sin entrar en ecuaciones: construye árboles secuencialmente, donde cada árbol corrige los errores del anterior.</p>
+
+<h2>Pipeline completo: desde los datos al modelo</h2>
+<pre>import pandas as pd
+import numpy as np
+from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import classification_report, roc_auc_score
+from sklearn.preprocessing import LabelEncoder
+
+# 1. Cargar y preparar datos
+df = pd.read_csv('clientes.csv')
+
+# XGBoost maneja NaN nativamente — no necesitas imputar
+X = df.drop('churn', axis=1)
+y = df['churn']
+
+# Encodear variables categóricas
+le = LabelEncoder()
+for col in X.select_dtypes('object'):
+    X[col] = le.fit_transform(X[col].astype(str))
+
+# 2. Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+# 3. Modelo base (para tener un benchmark)
+model = XGBClassifier(
+    n_estimators=500,
+    learning_rate=0.05,
+    max_depth=6,
+    subsample=0.8,
+    colsample_bytree=0.8,
+    use_label_encoder=False,
+    eval_metric='logloss',
+    early_stopping_rounds=50,
+    random_state=42
+)
+
+model.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=False)
+print(f"AUC-ROC: {roc_auc_score(y_test, model.predict_proba(X_test)[:,1]):.4f}")</pre>
+
+<h2>Hyperparameter tuning con Optuna</h2>
+<pre>import optuna
+optuna.logging.set_verbosity(optuna.logging.WARNING)
+
+def objective(trial):
+    params = {
+        'n_estimators': trial.suggest_int('n_estimators', 100, 1000),
+        'max_depth': trial.suggest_int('max_depth', 3, 9),
+        'learning_rate': trial.suggest_float('learning_rate', 0.01, 0.3, log=True),
+        'subsample': trial.suggest_float('subsample', 0.6, 1.0),
+        'colsample_bytree': trial.suggest_float('colsample_bytree', 0.6, 1.0),
+        'min_child_weight': trial.suggest_int('min_child_weight', 1, 10),
+        'gamma': trial.suggest_float('gamma', 0, 5),
+    }
+    
+    model = XGBClassifier(**params, use_label_encoder=False, eval_metric='logloss', random_state=42)
+    score = cross_val_score(model, X_train, y_train, cv=5, scoring='roc_auc').mean()
+    return score
+
+study = optuna.create_study(direction='maximize')
+study.optimize(objective, n_trials=100, show_progress_bar=True)
+print(f"Mejor AUC-ROC: {study.best_value:.4f}")
+print(f"Mejores params: {study.best_params}")</pre>
+
+<div class="tip"><strong>💡 Tip Sr:</strong> Siempre usa <code>early_stopping_rounds</code> con un conjunto de validación. Evita el overfitting automáticamente y te ahorra tiempo de entrenamiento.</div>
+
+<h2>Feature Importance con SHAP</h2>
+<pre>import shap
+
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(X_test)
+
+# Gráfica de importancia global
+shap.summary_plot(shap_values, X_test, plot_type="bar")
+
+# Explicación individual (¿por qué este cliente tiene churn alto?)
+shap.waterfall_plot(shap.Explanation(values=shap_values[0], base_values=explainer.expected_value, data=X_test.iloc[0]))</pre>
+
+<h2>Deployment con FastAPI</h2>
+<pre>from fastapi import FastAPI
+import joblib
+import pandas as pd
+
+app = FastAPI(title="Churn Prediction API")
+model = joblib.load("xgboost_churn.pkl")
+
+@app.post("/predict")
+def predict(data: dict):
+    df = pd.DataFrame([data])
+    proba = model.predict_proba(df)[0][1]
+    return {
+        "churn_probability": round(float(proba), 4),
+        "risk_level": "Alto" if proba > 0.7 else "Medio" if proba > 0.4 else "Bajo"
+    }</pre>
+
+<h2>Conclusión</h2>
+<p>XGBoost sigue siendo el modelo más confiable para datos tabulares en 2025. Con Optuna para tuning y SHAP para explicabilidad, tienes una solución production-ready que cualquier empresa puede entender y confiar.</p>`
+},
+{id:4,tag:'t-viz',tagLabel:'Visualización',date:'18 Mar 2025',min:'9 min',
+title:'Plotly vs Matplotlib: cuándo usar cada uno (con ejemplos)',
+excerpt:'No todas las visualizaciones son iguales. Te explico cuándo Matplotlib es suficiente, cuándo necesitas Plotly y cómo hacer gráficas que impresionen a directivos.',
+code:`<span class="kw">import</span> plotly.express <span class="kw">as</span> px
+<span class="kw">import</span> plotly.graph_objects <span class="kw">as</span> go
+
+fig = px.<span class="fn">scatter</span>(df, x=<span class="str">'ingresos'</span>, y=<span class="str">'clientes'</span>,
+    color=<span class="str">'region'</span>, size=<span class="str">'margen'</span>,
+    hover_data=[<span class="str">'producto'</span>],
+    title=<span class="str">'Análisis de Rentabilidad por Región'</span>)`,
+content:`
+<h2>La regla de oro de la visualización</h2>
+<p>Antes de elegir la librería, pregúntate: ¿quién va a ver esto? Si es un análisis exploratorio tuyo → Matplotlib/Seaborn. Si es un dashboard para directivos → Plotly. Si es una publicación académica → Matplotlib con estilo personalizado.</p>
+
+<h2>Matplotlib: cuándo y cómo</h2>
+<pre>import matplotlib.pyplot as plt
+import matplotlib.style as style
+import seaborn as sns
+
+# Configura una vez, usa siempre
+plt.rcParams.update({
+    'figure.dpi': 150,
+    'font.family': 'sans-serif',
+    'axes.spines.top': False,
+    'axes.spines.right': False,
+    'axes.grid': True,
+    'grid.alpha': 0.3,
+})
+
+# Análisis exploratorio rápido
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+
+# 1. Distribución
+axes[0].hist(df['ventas'], bins=30, color='#6c5ce7', alpha=0.7, edgecolor='white')
+axes[0].set_title('Distribución de Ventas', fontweight='bold')
+
+# 2. Correlación
+sns.heatmap(df.corr(), ax=axes[1], cmap='RdYlGn', center=0, annot=True, fmt='.2f')
+axes[1].set_title('Matriz de Correlación', fontweight='bold')
+
+# 3. Tendencia
+axes[2].plot(df['fecha'], df['ventas'].rolling(7).mean(), color='#00cdb8', linewidth=2)
+axes[2].fill_between(df['fecha'], df['ventas'], alpha=0.1, color='#00cdb8')
+axes[2].set_title('Tendencia (MA 7 días)', fontweight='bold')
+
+plt.tight_layout()
+plt.savefig('analisis_exploratorio.png', dpi=200, bbox_inches='tight')</pre>
+
+<h2>Plotly: dashboards interactivos</h2>
+<pre>import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+# Dashboard ejecutivo en 20 líneas
+fig = make_subplots(
+    rows=2, cols=2,
+    subplot_titles=('Ventas por Región', 'Top 10 Productos', 'Tendencia Mensual', 'Embudo de Conversión'),
+    specs=[[{"type": "bar"}, {"type": "bar"}], [{"type": "scatter"}, {"type": "funnel"}]]
+)
+
+# Panel 1: Ventas por región
+fig.add_trace(go.Bar(x=df_region['region'], y=df_region['ventas'], marker_color='#6c5ce7'), row=1, col=1)
+
+# Panel 2: Top productos
+fig.add_trace(go.Bar(x=top10['ventas'], y=top10['producto'], orientation='h', marker_color='#00cdb8'), row=1, col=2)
+
+# Panel 3: Tendencia
+fig.add_trace(go.Scatter(x=df_tiempo['mes'], y=df_tiempo['ventas'], fill='tozeroy', line_color='#f9a825'), row=2, col=1)
+
+fig.update_layout(
+    height=700, showlegend=False,
+    template='plotly_dark',
+    title_text="Dashboard Ejecutivo Q1 2025",
+    title_font_size=20
+)
+
+fig.write_html("dashboard_ejecutivo.html")  # Archivo interactivo listo para compartir</pre>
+
+<div class="tip"><strong>💡 Tip Sr:</strong> Exporta tu dashboard Plotly como HTML y compártelo por email o Slack. El receptor puede interactuar con él sin instalar nada. Es la forma más rápida de impresionar a un cliente.</div>
+
+<h2>Conclusión</h2>
+<p>Matplotlib para exploración y papers. Plotly para presentaciones y dashboards. Seaborn para visualizaciones estadísticas rápidas. Dominar los tres te pone en el top de cualquier equipo de datos.</p>`
+},
+{id:5,tag:'t-ai',tagLabel:'IA Generativa',date:'11 Mar 2025',min:'11 min',
+title:'RAG en producción: conecta tus datos a un LLM sin alucinaciones',
+excerpt:'Retrieval-Augmented Generation explicado desde cero. Construye un sistema que responda preguntas sobre tus documentos con LangChain, ChromaDB y Claude.',
+code:`<span class="kw">from</span> langchain.vectorstores <span class="kw">import</span> Chroma
+<span class="kw">from</span> langchain.embeddings <span class="kw">import</span> OpenAIEmbeddings
+
+vectorstore = Chroma.<span class="fn">from_documents</span>(
+    documents=docs,
+    embedding=<span class="fn">OpenAIEmbeddings</span>(),
+    persist_directory=<span class="str">"./chroma_db"</span>
+)
+retriever = vectorstore.<span class="fn">as_retriever</span>(search_kwargs={<span class="str">"k"</span>: 4})`,
+content:`
+<h2>¿Qué problema resuelve RAG?</h2>
+<p>Los LLMs tienen dos problemas para uso empresarial: su conocimiento tiene fecha de corte, y no conocen tus documentos internos. RAG (Retrieval-Augmented Generation) resuelve ambos: en vez de pedirle al modelo que "recuerde" información, le damos los documentos relevantes en cada consulta.</p>
+
+<h2>Arquitectura de RAG</h2>
+<pre>Documento → Chunks → Embeddings → Vector Store
+                                        ↓
+Usuario → Query → Embedding → Búsqueda semántica → Contexto relevante
+                                                          ↓
+                                              LLM + Contexto → Respuesta</pre>
+
+<h2>Implementación completa con LangChain</h2>
+<pre>from langchain.document_loaders import PyPDFLoader, DirectoryLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import RetrievalQA
+from langchain.prompts import PromptTemplate
+
+# 1. Cargar documentos
+loader = DirectoryLoader('./documentos/', glob="**/*.pdf", loader_cls=PyPDFLoader)
+documentos = loader.load()
+print(f"Cargados: {len(documentos)} páginas")
+
+# 2. Dividir en chunks (crucial para buena recuperación)
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,        # ~750 palabras por chunk
+    chunk_overlap=200,      # Overlap para no perder contexto en los bordes
+    separators=["\n\n", "\n", ".", " ", ""]
+)
+chunks = splitter.split_documents(documentos)
+print(f"Chunks generados: {len(chunks)}")
+
+# 3. Crear embeddings y almacenar en ChromaDB
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+vectorstore = Chroma.from_documents(
+    documents=chunks,
+    embedding=embeddings,
+    persist_directory="./chroma_db"
+)
+vectorstore.persist()
+
+# 4. Configurar el retriever
+retriever = vectorstore.as_retriever(
+    search_type="mmr",          # Maximum Marginal Relevance: evita documentos repetitivos
+    search_kwargs={"k": 4, "fetch_k": 20}
+)
+
+# 5. Prompt personalizado (clave para evitar alucinaciones)
+prompt_template = """Eres un asistente experto. Responde ÚNICAMENTE basándote en el contexto proporcionado.
+Si la información no está en el contexto, di explícitamente: "No tengo información sobre esto en los documentos disponibles."
+
+Contexto:
+{context}
+
+Pregunta: {question}
+
+Respuesta (en español, precisa y citando la fuente cuando sea posible):"""
+
+PROMPT = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
+
+# 6. Chain completo
+llm = ChatOpenAI(model_name="gpt-4o", temperature=0)
+qa_chain = RetrievalQA.from_chain_type(
+    llm=llm,
+    chain_type="stuff",
+    retriever=retriever,
+    chain_type_kwargs={"prompt": PROMPT},
+    return_source_documents=True
+)
+
+# 7. Usar el sistema
+def preguntar(query):
+    resultado = qa_chain({"query": query})
+    print(f"Respuesta: {resultado['result']}")
+    print(f"\nFuentes usadas:")
+    for doc in resultado['source_documents']:
+        print(f"  - {doc.metadata.get('source', 'desconocido')}, página {doc.metadata.get('page', '?')}")
+
+preguntar("¿Cuáles son los términos de servicio para cancelación?")</pre>
+
+<div class="tip"><strong>💡 Tip Sr:</strong> El prompt es el factor más importante para evitar alucinaciones. Siempre incluye una instrucción explícita de que diga "no sé" cuando la información no esté en los documentos.</div>
+
+<h2>Conclusión</h2>
+<p>RAG es la tecnología más demandada en proyectos empresariales de IA en 2025. Con este pipeline tienes un sistema que responde sobre tus documentos internos con precisión y sin inventar información.</p>`
+},
+{id:6,tag:'t-bi',tagLabel:'Power BI',date:'4 Mar 2025',min:'10 min',
+title:'DAX avanzado: las 10 medidas que todo analista debe dominar',
+excerpt:'CALCULATE, FILTER, ALL, ALLEXCEPT, USERELATIONSHIP y más. Con casos de negocio reales y el patrón correcto para cada situación.',
+code:`<span class="cm">-- Ventas YTD vs año anterior</span>
+Ventas YTD =
+<span class="fn">CALCULATE</span>(
+    <span class="fn">SUM</span>(Ventas[Importe]),
+    <span class="fn">DATESYTD</span>(Calendario[Fecha])
+)
+
+Variacion % AA =
+<span class="fn">DIVIDE</span>([Ventas YTD],
+    [Ventas YTD AA]) - 1`,
+content:`
+<h2>La lógica de evaluación en DAX</h2>
+<p>El error más común al aprender DAX es tratarlo como SQL o Excel. DAX tiene su propio modelo mental: las medidas se calculan en un contexto de filtro que puede modificarse con CALCULATE. Entender esto es entender DAX.</p>
+
+<h2>CALCULATE: la función más importante</h2>
+<pre>-- Ventas solo de México (sin importar el filtro del reporte)
+Ventas Mexico =
+CALCULATE(
+    SUM(Ventas[Importe]),
+    Clientes[Pais] = "Mexico"
+)
+
+-- Ventas del año pasado para el mismo período
+Ventas Año Anterior =
+CALCULATE(
+    SUM(Ventas[Importe]),
+    SAMEPERIODLASTYEAR(Calendario[Fecha])
+)
+
+-- YTD (Year to Date)
+Ventas YTD =
+CALCULATE(
+    SUM(Ventas[Importe]),
+    DATESYTD(Calendario[Fecha])
+)
+
+-- Variación porcentual año a año
+Variacion % AA =
+VAR ventas_actual = [Ventas YTD]
+VAR ventas_anterior = CALCULATE([Ventas YTD], SAMEPERIODLASTYEAR(Calendario[Fecha]))
+RETURN DIVIDE(ventas_actual - ventas_anterior, ventas_anterior)</pre>
+
+<h2>ALL y ALLEXCEPT: romper filtros selectivamente</h2>
+<pre>-- % del total general (ALL elimina TODOS los filtros)
+% del Total =
+DIVIDE(
+    SUM(Ventas[Importe]),
+    CALCULATE(SUM(Ventas[Importe]), ALL(Ventas))
+)
+
+-- % del total por categoría (ALLEXCEPT mantiene el filtro de categoría)
+% en Categoría =
+DIVIDE(
+    SUM(Ventas[Importe]),
+    CALCULATE(SUM(Ventas[Importe]), ALLEXCEPT(Productos, Productos[Categoria]))
+)</pre>
+
+<h2>RANKX: ranking dinámico</h2>
+<pre>-- Ranking de vendedores (se actualiza con los filtros del reporte)
+Ranking Vendedor =
+RANKX(
+    ALL(Vendedores[Nombre]),
+    [Total Ventas],
+    ,
+    DESC,
+    DENSE
+)</pre>
+
+<div class="tip"><strong>💡 Tip Sr:</strong> Siempre usa variables (VAR) en tus medidas. Mejora la legibilidad y el rendimiento porque el motor evalúa la expresión una sola vez en vez de múltiples veces.</div>
+
+<h2>Conclusión</h2>
+<p>Con CALCULATE, las funciones de inteligencia de tiempo (DATESYTD, SAMEPERIODLASTYEAR) y ALL/ALLEXCEPT, puedes resolver el 90% de los casos de negocio en Power BI. El otro 10% es RANKX, TOPN y medidas de tabla virtual.</p>`
+},
+{id:7,tag:'t-py',tagLabel:'Python',date:'25 Feb 2025',min:'13 min',
+title:'Automatización de reportes con Python: del Excel manual al email automático',
+excerpt:'Construye un pipeline que extrae datos, genera un reporte en Excel con gráficas y lo envía por email cada lunes a las 8am. Sin tocar un botón.',
+code:`<span class="kw">import</span> schedule, smtplib
+<span class="kw">from</span> email.mime.multipart <span class="kw">import</span> MIMEMultipart
+
+<span class="kw">def</span> <span class="fn">generar_y_enviar_reporte</span>():
+    df = <span class="fn">extraer_datos</span>()
+    excel = <span class="fn">crear_reporte_excel</span>(df)
+    <span class="fn">enviar_email</span>(excel, destinatarios)
+
+schedule.<span class="fn">every</span>().<span class="fn">monday</span>.<span class="fn">at</span>(<span class="str">"08:00"</span>).<span class="fn">do</span>(generar_y_enviar_reporte)`,
+content:`
+<h2>El problema del reporte manual</h2>
+<p>En casi todas las empresas hay alguien que cada lunes abre Excel, copia datos de diferentes fuentes, hace gráficas, las pega en un email y lo envía a 20 personas. Ese proceso toma 2-3 horas y es propenso a errores. Con Python puedes automatizarlo completamente.</p>
+
+<h2>Pipeline completo</h2>
+<pre>import pandas as pd
+import numpy as np
+from openpyxl import Workbook
+from openpyxl.chart import BarChart, Reference
+from openpyxl.styles import Font, PatternFill, Alignment
+import schedule
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email import encoders
+import time
+from datetime import datetime
+
+# ── 1. EXTRACCIÓN DE DATOS ──
+def extraer_datos():
+    """Conecta a tu fuente de datos real"""
+    # Ejemplo con SQL
+    import sqlalchemy
+    engine = sqlalchemy.create_engine('postgresql://user:pass@servidor/db')
+    
+    query = """
+    SELECT 
+        DATE_TRUNC('week', fecha_venta) as semana,
+        region,
+        SUM(importe) as ventas,
+        COUNT(DISTINCT cliente_id) as clientes,
+        AVG(importe) as ticket_promedio
+    FROM ventas
+    WHERE fecha_venta >= CURRENT_DATE - INTERVAL '8 weeks'
+    GROUP BY 1, 2
+    ORDER BY 1, 2
+    """
+    return pd.read_sql(query, engine)
+
+# ── 2. CREACIÓN DEL REPORTE EXCEL ──
+def crear_reporte_excel(df):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Reporte Semanal"
+    
+    # Estilos
+    header_fill = PatternFill(start_color="6C5CE7", end_color="6C5CE7", fill_type="solid")
+    header_font = Font(bold=True, color="FFFFFF", size=11)
+    
+    # Encabezado del reporte
+    ws.merge_cells('A1:E1')
+    ws['A1'] = f"Reporte Semanal de Ventas — {datetime.now().strftime('%d/%m/%Y')}"
+    ws['A1'].font = Font(bold=True, size=14)
+    ws['A1'].alignment = Alignment(horizontal='center')
+    
+    # Datos
+    headers = ['Semana', 'Región', 'Ventas ($)', 'Clientes', 'Ticket Promedio ($)']
+    for col, header in enumerate(headers, 1):
+        cell = ws.cell(row=3, column=col, value=header)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal='center')
+    
+    for row_idx, row in df.iterrows():
+        for col_idx, value in enumerate(row, 1):
+            ws.cell(row=row_idx+4, column=col_idx, value=value)
+    
+    # Agregar gráfica
+    chart = BarChart()
+    chart.type = "col"
+    chart.title = "Ventas por Región"
+    chart.y_axis.title = "Ventas ($)"
+    
+    data = Reference(ws, min_col=3, min_row=3, max_row=len(df)+4)
+    chart.add_data(data, titles_from_data=True)
+    ws.add_chart(chart, "G3")
+    
+    # Autoajustar columnas
+    for col in ws.columns:
+        max_length = max(len(str(cell.value or '')) for cell in col)
+        ws.column_dimensions[col[0].column_letter].width = min(max_length + 2, 40)
+    
+    filename = f"reporte_ventas_{datetime.now().strftime('%Y%m%d')}.xlsx"
+    wb.save(filename)
+    return filename
+
+# ── 3. ENVÍO POR EMAIL ──
+def enviar_email(archivo, destinatarios):
+    msg = MIMEMultipart()
+    msg['Subject'] = f"📊 Reporte Semanal de Ventas — {datetime.now().strftime('%d/%m/%Y')}"
+    msg['From'] = 'reportes@tuempresa.com'
+    msg['To'] = ', '.join(destinatarios)
+    
+    body = """
+    Equipo,
+    
+    Adjunto encontrarán el reporte semanal de ventas generado automáticamente.
+    
+    Resumen ejecutivo:
+    • Reporte generado: {fecha}
+    • Período cubierto: Últimas 8 semanas
+    
+    Para dudas sobre los datos, responde a este email.
+    
+    Saludos,
+    Sistema de Reportes Automáticos
+    """.format(fecha=datetime.now().strftime('%d/%m/%Y %H:%M'))
+    
+    msg.attach(MIMEText(body, 'plain'))
+    
+    with open(archivo, 'rb') as f:
+        attachment = MIMEBase('application', 'octet-stream')
+        attachment.set_payload(f.read())
+        encoders.encode_base64(attachment)
+        attachment.add_header('Content-Disposition', f'attachment; filename={archivo}')
+        msg.attach(attachment)
+    
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+        server.login('reportes@tuempresa.com', 'tu_app_password')
+        server.send_message(msg)
+    print(f"Email enviado a {len(destinatarios)} destinatarios")
+
+# ── 4. SCHEDULER ──
+def generar_y_enviar():
+    print(f"[{datetime.now()}] Generando reporte...")
+    df = extraer_datos()
+    excel = crear_reporte_excel(df)
+    enviar_email(excel, ['gerencia@empresa.com', 'ventas@empresa.com'])
+    print(f"[{datetime.now()}] Reporte enviado exitosamente")
+
+# Ejecutar cada lunes a las 8:00 AM
+schedule.every().monday.at("08:00").do(generar_y_enviar)
+
+print("Scheduler iniciado. Esperando el próximo lunes...")
+while True:
+    schedule.run_pending()
+    time.sleep(60)</pre>
+
+<h2>Conclusión</h2>
+<p>Este script elimina horas de trabajo manual repetitivo. Una vez configurado, corre solo cada semana. El siguiente paso: desplegarlo en un servidor cloud (AWS EC2, Google Cloud Run) para que no dependa de tu computadora.</p>`
+},
+{id:8,tag:'t-sql',tagLabel:'SQL',date:'18 Feb 2025',min:'8 min',
+title:'CTEs recursivas: resuelve problemas imposibles con SQL puro',
+excerpt:'Las CTEs recursivas son la herramienta más infrautilizada de SQL. Aprende a recorrer jerarquías, generar series de fechas y resolver grafos con SQL.',
+code:`<span class="cm">-- Generar serie de fechas sin tablas auxiliares</span>
+<span class="kw">WITH RECURSIVE</span> fechas <span class="kw">AS</span> (
+  <span class="kw">SELECT</span> <span class="str">'2024-01-01'</span>::date <span class="kw">AS</span> fecha
+  <span class="kw">UNION ALL</span>
+  <span class="kw">SELECT</span> fecha + 1 <span class="kw">FROM</span> fechas
+  <span class="kw">WHERE</span> fecha < <span class="str">'2024-12-31'</span>
+)
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> fechas`,
+content:`
+<h2>¿Qué son las CTEs recursivas?</h2>
+<p>Una CTE recursiva se referencia a sí misma. Tiene dos partes: el caso base (la primera consulta) y la parte recursiva (que se ejecuta repetidamente hasta que no hay más resultados). Son perfectas para jerarquías, árboles y series.</p>
+
+<h2>Caso 1: Jerarquía de empleados (org chart)</h2>
+<pre>-- Tabla: empleados(id, nombre, manager_id)
+WITH RECURSIVE org_chart AS (
+    -- Caso base: el CEO (sin manager)
+    SELECT id, nombre, manager_id, 0 AS nivel, nombre::TEXT AS ruta
+    FROM empleados
+    WHERE manager_id IS NULL
+    
+    UNION ALL
+    
+    -- Caso recursivo: empleados que reportan a alguien en el nivel anterior
+    SELECT e.id, e.nombre, e.manager_id, oc.nivel + 1,
+           (oc.ruta || ' → ' || e.nombre)::TEXT
+    FROM empleados e
+    JOIN org_chart oc ON e.manager_id = oc.id
+)
+SELECT 
+    REPEAT('  ', nivel) || nombre AS organigrama,
+    nivel,
+    ruta
+FROM org_chart
+ORDER BY ruta;</pre>
+
+<h2>Caso 2: Serie de fechas (sin tabla calendario)</h2>
+<pre>WITH RECURSIVE calendario AS (
+    SELECT DATE '2024-01-01' AS fecha
+    UNION ALL
+    SELECT fecha + INTERVAL '1 day'
+    FROM calendario
+    WHERE fecha < DATE '2024-12-31'
+)
+-- Unir con ventas para incluir días sin ventas
+SELECT 
+    c.fecha,
+    COALESCE(SUM(v.importe), 0) AS ventas,
+    EXTRACT(DOW FROM c.fecha) AS dia_semana
+FROM calendario c
+LEFT JOIN ventas v ON v.fecha_venta = c.fecha
+GROUP BY c.fecha
+ORDER BY c.fecha;</pre>
+
+<div class="tip"><strong>💡 Tip Sr:</strong> Siempre agrega un límite de recursión con una columna de nivel o una condición WHERE para evitar bucles infinitos. PostgreSQL tiene un límite por defecto de 100 iteraciones.</div>
+
+<h2>Caso 3: Encontrar la ruta más corta en un grafo</h2>
+<pre>-- Tabla: rutas(origen, destino, distancia_km)
+WITH RECURSIVE rutas_posibles AS (
+    -- Punto de partida
+    SELECT origen, destino, distancia_km, ARRAY[origen, destino] AS ruta
+    FROM rutas
+    WHERE origen = 'CDMX'
+    
+    UNION ALL
+    
+    -- Extender la ruta
+    SELECT r.origen, r.destino, rp.distancia_km + r.distancia_km,
+           rp.ruta || r.destino
+    FROM rutas r
+    JOIN rutas_posibles rp ON r.origen = rp.destino
+    WHERE r.destino != ALL(rp.ruta)  -- Evitar ciclos
+      AND array_length(rp.ruta, 1) < 6  -- Máximo 5 saltos
+)
+SELECT ruta, distancia_km
+FROM rutas_posibles
+WHERE destino = 'Guadalajara'
+ORDER BY distancia_km
+LIMIT 1;</pre>
+
+<h2>Conclusión</h2>
+<p>Las CTEs recursivas resuelven en SQL puro problemas que muchos creen que solo se pueden hacer en Python. Jerarquías organizacionales, calendarios, grafos de relaciones — todo con una sola consulta.</p>`
+},
+{id:9,tag:'t-ml',tagLabel:'Machine Learning',date:'11 Feb 2025',min:'14 min',
+title:'Detección de anomalías: encuentra lo raro en tus datos',
+excerpt:'Isolation Forest, DBSCAN y Autoencoders para detectar fraude, fallas de equipos y comportamientos inusuales. Con código production-ready.',
+code:`<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> IsolationForest
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+clf = <span class="fn">IsolationForest</span>(
+    contamination=<span class="str">0.05</span>,
+    n_estimators=<span class="str">200</span>,
+    random_state=<span class="str">42</span>
+)
+anomalias = clf.<span class="fn">fit_predict</span>(X)
+<span class="cm"># -1 = anomalía, 1 = normal</span>`,
+content:`
+<h2>¿Cuándo usar detección de anomalías?</h2>
+<p>Detección de fraude en transacciones, fallas en maquinaria industrial, comportamientos inusuales de usuarios, errores en datos de sensores IoT. En todos estos casos tienes muchos datos "normales" y muy pocos "anómalos" — los métodos supervisados fallan porque no tienes suficientes ejemplos de la clase rara.</p>
+
+<h2>Isolation Forest: el más confiable para tabular</h2>
+<pre>import pandas as pd
+import numpy as np
+from sklearn.ensemble import IsolationForest
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
+# Pipeline completo de detección de anomalías
+def detectar_anomalias_isolation_forest(df, features, contamination=0.05):
+    """
+    contamination: proporción esperada de anomalías (0.05 = 5%)
+    """
+    X = df[features].copy()
+    
+    # Escalar features
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    # Modelo
+    clf = IsolationForest(
+        n_estimators=200,
+        contamination=contamination,
+        max_samples='auto',
+        random_state=42,
+        n_jobs=-1
+    )
+    
+    df = df.copy()
+    df['anomaly_score'] = clf.fit_predict(X_scaled)   # -1 anomalía, 1 normal
+    df['anomaly_probability'] = -clf.score_samples(X_scaled)  # Qué tan anómalo
+    
+    anomalias = df[df['anomaly_score'] == -1]
+    print(f"Anomalías detectadas: {len(anomalias)} ({len(anomalias)/len(df)*100:.1f}%)")
+    
+    return df, anomalias, clf
+
+# Ejemplo: detectar transacciones fraudulentas
+df_transacciones = pd.read_csv('transacciones.csv')
+features = ['monto', 'hora_del_dia', 'dias_desde_ultima_compra', 'num_productos', 'distancia_desde_casa_km']
+
+df_resultado, fraudes, modelo = detectar_anomalias_isolation_forest(
+    df_transacciones, features, contamination=0.02  # Esperamos ~2% de fraude
+)
+
+# Los casos más sospechosos
+print(fraudes.nlargest(10, 'anomaly_probability')[features + ['anomaly_probability']])</pre>
+
+<h2>DBSCAN: cuando las anomalías forman clusters</h2>
+<pre>from sklearn.cluster import DBSCAN
+
+# DBSCAN detecta puntos que no pertenecen a ningún cluster como ruido (-1)
+dbscan = DBSCAN(
+    eps=0.5,       # Radio máximo para considerar vecinos
+    min_samples=5  # Mínimo de puntos para formar un cluster
+)
+
+labels = dbscan.fit_predict(X_scaled)
+anomalias_dbscan = df[labels == -1]  # -1 = no pertenece a ningún cluster
+print(f"Anomalías DBSCAN: {len(anomalias_dbscan)}")</pre>
+
+<h2>Autoencoder con PyTorch para series temporales</h2>
+<pre>import torch
+import torch.nn as nn
+
+class Autoencoder(nn.Module):
+    def __init__(self, input_dim, encoding_dim=8):
+        super().__init__()
+        self.encoder = nn.Sequential(
+            nn.Linear(input_dim, 32), nn.ReLU(),
+            nn.Linear(32, 16), nn.ReLU(),
+            nn.Linear(16, encoding_dim), nn.ReLU()
+        )
+        self.decoder = nn.Sequential(
+            nn.Linear(encoding_dim, 16), nn.ReLU(),
+            nn.Linear(16, 32), nn.ReLU(),
+            nn.Linear(32, input_dim)
+        )
+    
+    def forward(self, x):
+        return self.decoder(self.encoder(x))
+
+# Entrenar SOLO con datos normales
+model = Autoencoder(input_dim=X_train_normal.shape[1])
+criterion = nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+# El error de reconstrucción alto = anomalía
+reconstruction_errors = []
+with torch.no_grad():
+    for x in X_test_tensor:
+        output = model(x)
+        error = criterion(output, x).item()
+        reconstruction_errors.append(error)
+
+threshold = np.percentile(reconstruction_errors, 95)
+anomalias = [i for i, e in enumerate(reconstruction_errors) if e > threshold]</pre>
+
+<h2>Conclusión</h2>
+<p>Para datos tabulares, empieza con Isolation Forest — es robusto, rápido y no requiere asumir distribución. Usa DBSCAN cuando sospechas que las anomalías tienen estructura espacial. Los Autoencoders brillan en series temporales y datos de alta dimensión.</p>`
+},
+{id:10,tag:'t-py',tagLabel:'Python',date:'4 Feb 2025',min:'11 min',
+title:'Polars: el reemplazo de Pandas que es 10x más rápido',
+excerpt:'Polars está reescribiendo las reglas del análisis de datos en Python. API similar a Pandas pero con lazy evaluation, paralelización automática y sintaxis más limpia.',
+code:`<span class="kw">import</span> polars <span class="kw">as</span> pl
+
+df = pl.<span class="fn">scan_csv</span>(<span class="str">"ventas_50M.csv"</span>)  <span class="cm"># Lazy!</span>
+
+resultado = (df
+  .<span class="fn">filter</span>(pl.col(<span class="str">"ventas"</span>) > 1000)
+  .<span class="fn">group_by</span>(<span class="str">"region"</span>)
+  .<span class="fn">agg</span>(pl.col(<span class="str">"ventas"</span>).<span class="fn">sum</span>())
+  .<span class="fn">collect</span>())  <span class="cm"># Ejecuta todo optimizado</span>`,
+content:`
+<h2>¿Por qué Polars está reemplazando Pandas?</h2>
+<p>Polars está escrito en Rust con paralelización automática, lazy evaluation (planifica el query antes de ejecutarlo) y manejo de memoria mucho más eficiente. En benchmarks reales con datasets de 50M+ filas, Polars es 5-20x más rápido que Pandas. En 2025 ya lo usan empresas como Hugging Face, Quansight y decenas de fintechs.</p>
+
+<h2>Comparación directa: Pandas vs Polars</h2>
+<pre>import pandas as pd
+import polars as pl
+import time
+
+# ── PANDAS ──
+start = time.time()
+df_pd = pd.read_csv('ventas_50M.csv')
+resultado_pd = (df_pd
+    .query("ventas > 1000")
+    .groupby('region')
+    .agg({'ventas': 'sum', 'cliente_id': 'nunique'})
+    .reset_index()
+    .rename(columns={'cliente_id': 'clientes_unicos'})
+    .sort_values('ventas', ascending=False)
+)
+print(f"Pandas: {time.time()-start:.2f}s")
+
+# ── POLARS ──
+start = time.time()
+resultado_pl = (pl
+    .scan_csv('ventas_50M.csv')          # Lazy: no carga en memoria aún
+    .filter(pl.col('ventas') > 1000)
+    .group_by('region')
+    .agg([
+        pl.col('ventas').sum(),
+        pl.col('cliente_id').n_unique().alias('clientes_unicos')
+    ])
+    .sort('ventas', descending=True)
+    .collect()                           # Aquí ejecuta todo optimizado
+)
+print(f"Polars: {time.time()-start:.2f}s")
+# Resultado típico: Pandas 45s vs Polars 4s</pre>
+
+<h2>Expresiones Polars: más poderosas que Pandas</h2>
+<pre># Múltiples operaciones en una sola expresión
+df = pl.read_csv('clientes.csv')
+
+resultado = df.with_columns([
+    # Normalizar nombres
+    pl.col('nombre').str.strip_chars().str.to_titlecase(),
+    
+    # Fecha desde string
+    pl.col('fecha_registro').str.to_date('%Y-%m-%d'),
+    
+    # Columna calculada
+    (pl.col('compras_total') / pl.col('meses_cliente')).alias('compras_por_mes'),
+    
+    # Categorización
+    pl.when(pl.col('compras_total') > 10000).then(pl.lit('Premium'))
+      .when(pl.col('compras_total') > 5000).then(pl.lit('Gold'))
+      .otherwise(pl.lit('Standard'))
+      .alias('segmento')
+])
+
+# Lazy con múltiples fuentes
+ventas = pl.scan_csv('ventas.csv')
+productos = pl.scan_csv('productos.csv')
+
+reporte = (ventas
+    .join(productos, on='producto_id', how='left')
+    .filter(pl.col('categoria') == 'Electrónica')
+    .group_by(['mes', 'subcategoria'])
+    .agg([
+        pl.col('importe').sum().alias('ventas_total'),
+        pl.col('importe').mean().alias('ticket_promedio'),
+        pl.col('cliente_id').n_unique().alias('clientes')
+    ])
+    .collect()
+)</pre>
+
+<div class="tip"><strong>💡 Tip Sr:</strong> Usa <code>scan_csv()</code> en vez de <code>read_csv()</code> para archivos grandes. Polars construye un plan de ejecución optimizado y solo lee los datos que realmente necesita. Es como la diferencia entre SQL lazy y cargar toda la tabla en memoria.</div>
+
+<h2>¿Debo migrar de Pandas a Polars?</h2>
+<p>Para análisis interactivo y datasets &lt;1M filas: Pandas sigue siendo válido, el ecosistema es maduro. Para pipelines de producción, ETL y datasets grandes: Polars ya es la mejor opción. La migración es gradual — puedes convertir entre ambos con <code>df.to_pandas()</code> y <code>pl.from_pandas(df)</code>.</p>
+
+<h2>Conclusión</h2>
+<p>Polars no es solo "Pandas más rápido" — es una filosofía diferente de manipulación de datos. La lazy evaluation y las expresiones encadenadas producen código más limpio y eficiente. En 2025 es la herramienta que todo Data Scientist Sr debería conocer.</p>`
 }
+];
 
-// ── PROMPTS ──
-const prompts = {
-  analisis:{
-    p:(t,lang)=>`Actúa como un analista de datos senior con 10 años de experiencia.\n\nTengo un dataset sobre ${t||'mis datos de negocio'} y quiero hacer un análisis exploratorio.\n\nPor favor:\n1. Dime qué preguntas de negocio responder primero\n2. Explica qué estadísticas descriptivas calcular y por qué\n3. Muéstrame cómo detectar valores nulos y outliers\n4. Sugiere 3 visualizaciones básicas con su interpretación\n5. Da conclusiones en lenguaje simple, sin jerga técnica\n\nUsa ejemplos concretos y explica cada paso.\nResponde en ${lang}.`,
-    m:(t,lang)=>`Eres un Data Analyst experto. Analiza un dataset de ${t||'datos empresariales'}.\n\nRealiza:\n1. Análisis univariante y bivariante completo\n2. Detección de correlaciones con matriz\n3. Segmentación de datos con criterios de negocio\n4. Identificación de tendencias temporales\n5. Hipótesis basadas en los patrones encontrados\n6. Recomendaciones accionables para el negocio\n\nIncluye código Python (pandas + seaborn) para cada paso.\nResponde en ${lang}.`,
-    a:(t,lang)=>`Actúa como Chief Data Officer. Dataset: ${t||'datos corporativos complejos'}.\n\nEntrega análisis de nivel ejecutivo:\n1. Framework CRISP-DM aplicado al caso\n2. Análisis multivariante con PCA/clustering si aplica\n3. Statistical hypothesis testing (p-values, confidence intervals)\n4. Business insights con ROI estimado\n5. Limitaciones y sesgos del análisis\n6. Roadmap de próximos pasos: 30-60-90 días\n\nCódigo production-ready en Python.\nResponde en ${lang}.`
-  },
-  codigo:{
-    p:(t,lang)=>`Eres un programador Python especialista en datos, paciente y didáctico.\n\nQuiero aprender a escribir código Python para ${t||'trabajar con datos'}.\n\nNecesito:\n1. El código completo con comentarios explicativos línea por línea\n2. Por qué usar cada librería\n3. Cómo ejecutar el código\n4. Errores comunes y cómo evitarlos\n5. Ejercicio adicional para practicar\n\nResponde en ${lang}.`,
-    m:(t,lang)=>`Escribe código Python profesional para ${t||'procesamiento de datos'}.\n\nRequisitos:\n- pandas, numpy y librerías apropiadas\n- Manejo de errores (try/except)\n- Docstrings y type hints\n- Funciones modulares reutilizables\n- Datos de muestra de ejemplo\n- Tests básicos\n\nSigue PEP 8. Comenta las partes no obvias.\nResponde en ${lang}.`,
-    a:(t,lang)=>`Desarrolla un pipeline de datos production-ready para ${t||'procesamiento avanzado'}.\n\nEspecificaciones:\n- ETL completo con logging y monitoreo\n- Optimizado para 1M+ filas\n- Manejo de errores, reintentos, validación de schema\n- Diseño escalable para paralelización\n- Unit tests con pytest, fixtures y mocks\n- Compatible con GitHub Actions CI/CD\n\nIncluye benchmarks y consideraciones de memoria.\nResponde en ${lang}.`
-  },
-  sql:{
-    p:(t,lang)=>`Eres un experto en SQL que enseña de forma clara y práctica.\n\nQuiero escribir consultas SQL para ${t||'analizar datos de mi negocio'}.\n\nExplícame:\n1. Estructura básica: SELECT, FROM, WHERE\n2. Cómo unir tablas con JOIN\n3. Cómo agrupar con GROUP BY, COUNT, SUM\n4. Cómo filtrar con HAVING\n5. Ejemplo completo ejecutable\n\nIncluye la consulta SQL lista para copiar.\nResponde en ${lang}.`,
-    m:(t,lang)=>`Escribe consultas SQL avanzadas para ${t||'reportes de negocio'}.\n\nNecesito:\n1. CTEs para organizar la lógica\n2. Window functions: ROW_NUMBER, RANK, LAG, LEAD\n3. Subconsultas correlacionadas cuando aplique\n4. Índices recomendados para optimización\n5. Análisis del execution plan\n\nBase: PostgreSQL. Formato: consulta + explicación + resultado esperado.\nResponde en ${lang}.`,
-    a:(t,lang)=>`Diseña queries SQL de alto rendimiento para ${t||'análisis a gran escala'}.\n\nRequisitos:\n1. Queries para tablas de 100M+ filas\n2. Estrategia de particionamiento\n3. Índices compuestos vs. parciales\n4. Materialized views para consultas frecuentes\n5. EXPLAIN ANALYZE y query hints\n6. Alternativa en dbt si aplica\n\nIncluye análisis de complejidad y benchmarks esperados.\nResponde en ${lang}.`
-  },
-  dashboard:{
-    p:(t,lang)=>`Eres un experto en Business Intelligence y visualización.\n\nQuiero crear mi primer dashboard sobre ${t||'métricas de mi negocio'}.\n\nGuíame en:\n1. Qué KPIs mostrar (máximo 6, explicados)\n2. Qué tipo de gráfica usar para cada métrica\n3. Cómo organizar el layout\n4. Colores y diseño básico\n5. Cómo hacerlo en Power BI paso a paso\n\nResponde en ${lang}.`,
-    m:(t,lang)=>`Diseña un dashboard ejecutivo para ${t||'análisis de negocio'}.\n\nEspecificaciones:\n1. Jerarquía: overview → drilldown\n2. KPIs con benchmarks e indicadores de tendencia\n3. Filtros: fecha, región, segmento\n4. Fórmulas DAX necesarias\n5. Diseño: paleta, tipografía, espaciado\n6. Conexión de múltiples fuentes de datos\n\nEntrega wireframe en texto por sección.\nResponde en ${lang}.`,
-    a:(t,lang)=>`Arquitectura completa de solución BI para ${t||'inteligencia empresarial'}.\n\n1. Data model: star schema vs snowflake\n2. DAX measures avanzadas: time intelligence, ratio analysis\n3. Row-level security (RLS) design\n4. Performance: aggregations, incremental refresh\n5. Embedding en portales web\n6. Governance: lineage, documentation, refresh schedule\n\nIncluye diagrama de arquitectura y stack tecnológico.\nResponde en ${lang}.`
-  },
-  ml:{
-    p:(t,lang)=>`Eres un Data Scientist que explica ML de forma accesible.\n\nQuiero crear mi primer modelo de ML para ${t||'hacer predicciones'}.\n\nExplícame:\n1. Qué modelo usar y por qué (lenguaje simple)\n2. Cómo preparar los datos\n3. Código Python completo con scikit-learn\n4. Cómo evaluar si el modelo es bueno\n5. Qué significa cada métrica (accuracy, precision, recall)\n6. Cómo mejorar el modelo\n\nSin matemáticas complejas.\nResponde en ${lang}.`,
-    m:(t,lang)=>`Desarrolla un modelo ML para ${t||'predicción empresarial'}.\n\nIncluye:\n1. Feature engineering específico\n2. Comparación de 3 algoritmos con pros/cons\n3. Cross-validation y métricas adecuadas\n4. Hyperparameter tuning con Optuna\n5. SHAP values para interpretabilidad\n6. Pipeline completo: preprocesamiento → modelo → evaluación\n\nCódigo en scikit-learn + visualizaciones.\nResponde en ${lang}.`,
-    a:(t,lang)=>`Diseña solución MLOps para ${t||'sistema predictivo en producción'}.\n\n1. Problem framing: métricas negocio → métricas ML\n2. Feature store: offline vs. online features\n3. Model selection: ensemble, AutoML, transfer learning\n4. Experiment tracking con MLflow o W&B\n5. CI/CD para modelos: testing, validation, canary deployment\n6. Monitoring: data drift, concept drift\n7. Retraining strategy y triggers\n\nArquitectura de sistema y stack tecnológico.\nResponde en ${lang}.`
-  },
-  viz:{
-    p:(t,lang)=>`Eres un experto en visualización de datos.\n\nQuiero crear visualizaciones de ${t||'mis datos'}.\n\nEnséñame:\n1. Qué tipo de gráfica usar según mi objetivo\n2. Los 5 errores más comunes y cómo evitarlos\n3. Código Python con matplotlib/seaborn para 3 gráficas\n4. Cómo hacerlas bonitas: colores, títulos, etiquetas\n5. Cuándo NO usar una gráfica de pastel\n\nCódigo listo para ejecutar con datos de ejemplo.\nResponde en ${lang}.`,
-    m:(t,lang)=>`Crea visualizaciones avanzadas e interactivas para ${t||'comunicación de datos'}.\n\n1. Dashboard interactivo con Plotly o Altair\n2. Storytelling visual: secuencia que cuenta una historia\n3. Animaciones temporales\n4. Mapas coropléticos con folium o plotly geo\n5. Heatmaps y matrices de correlación\n6. Principios de diseño: Gestalt, teoría del color\n\nCódigo completo y reproducible.\nResponde en ${lang}.`,
-    a:(t,lang)=>`Diseña un sistema de visualización nivel editorial para ${t||'comunicación ejecutiva'}.\n\n1. Design system: tipografía, colores, componentes\n2. D3.js para visualizaciones custom\n3. WebGL/Canvas para millones de puntos\n4. Accesibilidad: WCAG 2.1, daltonismo\n5. Performance: lazy loading, virtualization\n6. Storytelling interactivo tipo NYT/The Pudding\n\nArquitectura de componentes y código de referencia.\nResponde en ${lang}.`
-  },
-  limpieza:{
-    p:(t,lang)=>`Eres un experto en calidad de datos.\n\nMis datos de ${t||'mi dataset'} están sucios y no sé cómo limpiarlos.\n\nAyúdame a:\n1. Identificar tipos de problemas en el dataset\n2. Detectar y manejar valores nulos (NaN)\n3. Encontrar y tratar duplicados\n4. Corregir tipos de datos incorrectos\n5. Detectar outliers y decidir qué hacer\n\nCódigo Python con pandas, paso a paso.\nResponde en ${lang}.`,
-    m:(t,lang)=>`Pipeline de limpieza y validación para ${t||'dataset empresarial'}.\n\n1. Profiling con ydata-profiling\n2. Estrategias de imputación: mean, median, KNN, MICE\n3. Detección de outliers: IQR, Z-score, Isolation Forest\n4. Normalización de strings con fuzzy matching\n5. Validación de schema con Great Expectations\n6. Documentación de transformaciones\n\nCódigo modular y reutilizable.\nResponde en ${lang}.`,
-    a:(t,lang)=>`Framework de Data Quality para ${t||'datos en producción a escala'}.\n\n1. Dimensiones de calidad: completeness, accuracy, consistency\n2. Statistical process control para anomalías en tiempo real\n3. Master Data Management strategy\n4. Data catalog con profiling automatizado\n5. Great Expectations: suites, checkpoints, data docs\n6. Entity resolution y deduplicación a escala\n7. Governance: ownership, SLAs, alertas\n\nArquitectura end-to-end de calidad de datos.\nResponde en ${lang}.`
-  },
-  story:{
-    p:(t,lang)=>`Eres un experto en comunicar datos de forma persuasiva.\n\nTengo datos sobre ${t||'resultados de negocio'} y necesito presentarlos.\n\nAyúdame a:\n1. Estructurar mi historia con datos (inicio, conflicto, resolución)\n2. Elegir las 3 métricas más importantes\n3. Crear una narrativa que enganche a no-técnicos\n4. Frases y estructura para mi presentación\n5. Hacer mis conclusiones memorables\n\nDame un template adaptable.\nResponde en ${lang}.`,
-    m:(t,lang)=>`Crea narrativa de datos completa para ${t||'presentación ejecutiva'}.\n\n1. Framework SCR (Situation, Complication, Resolution)\n2. Insight principal en una oración\n3. Estructura de slides: qué va en cada una\n4. Lenguaje ejecutivo: métricas → impacto de negocio\n5. Anticipar objeciones y preguntas difíciles\n6. Call to action claro y medible\n\nIncluye script de presentación.\nResponde en ${lang}.`,
-    a:(t,lang)=>`Estrategia de comunicación de datos para ${t||'transformación data-driven'}.\n\n1. Audience segmentation: C-suite vs managers vs analistas\n2. Narrative arc: cómo construir urgencia con datos\n3. Data journalism aplicado a comunicación interna\n4. Psicología cognitiva: cómo los humanos procesan datos\n5. Dashboard narrative: guiar la mirada con diseño\n6. Medir el impacto de tu historia\n7. Building a data culture desde la comunicación\n\nFramework replicable para tu organización.\nResponde en ${lang}.`
+// ══════════════════════════════════════════
+// RENDER ARTICLES
+// ══════════════════════════════════════════
+function renderArticles(){
+  const grid=document.getElementById('articles-grid');
+  grid.innerHTML=ARTICLES.map(a=>`
+    <div class="art-card" onclick="openArticle(${a.id})">
+      <div class="art-code">${a.code}</div>
+      <div class="art-body">
+        <div class="art-meta">
+          <span class="tag ${a.tag}">${a.tagLabel}</span>
+          <span class="adate">${a.date}</span>
+          <span class="amin">${a.min}</span>
+        </div>
+        <h3 class="atitle">${a.title}</h3>
+        <p class="aexc">${a.excerpt}</p>
+        <div class="art-foot">
+          <a class="alink">Leer artículo completo →</a>
+        </div>
+      </div>
+    </div>`).join('');
+}
+renderArticles();
+
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+function openArticle(id){
+  const a=ARTICLES.find(x=>x.id===id);
+  if(!a)return;
+  document.getElementById('m-tag').innerHTML=`<span class="tag ${a.tag}" style="font-size:.72rem">${a.tagLabel}</span>`;
+  document.getElementById('m-title').textContent=a.title;
+  document.getElementById('m-meta').innerHTML=`<span>📅 ${a.date}</span><span>⏱ ${a.min} de lectura</span><span>✍️ Alejandro Reyes · Bits & Datos</span>`;
+  document.getElementById('m-body').innerHTML=a.content;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal')){
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow='';
   }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// ══════════════════════════════════════════
+// PROMPT GENERATOR
+// ══════════════════════════════════════════
+const PROMPTS={
+  analisis:{p:(t,l)=>`Actúa como un Data Analyst Sr con 10 años de experiencia en análisis de negocio.\n\nTengo datos sobre "${t||'mi negocio'}" y necesito un análisis exploratorio completo.\n\nPor favor:\n1. Define las 5 preguntas de negocio más importantes a responder\n2. Lista las estadísticas descriptivas clave y por qué importan\n3. Explica cómo detectar outliers y qué hacer con ellos\n4. Sugiere 3 visualizaciones con su interpretación de negocio\n5. Da conclusiones accionables en lenguaje ejecutivo\n\nUsa ejemplos concretos. Responde en ${l}.`,
+  m:(t,l)=>`Eres un Senior Data Analyst. Analiza datos de "${t||'negocio empresarial'}" con enfoque en impacto.\n\n1. Análisis univariante y bivariante con interpretación de negocio\n2. Segmentación de datos usando criterios de valor empresarial\n3. Correlaciones: distingue causación de correlación\n4. Detección de tendencias temporales con estacionalidad\n5. Hipótesis basadas en patrones con próximos pasos\n6. Recomendaciones con ROI estimado\n\nIncluye código Python (pandas + seaborn) production-ready.\nResponde en ${l}.`,
+  a:(t,l)=>`Actúa como Chief Data Officer. Dataset: "${t||'datos corporativos complejos'}".\n\n1. Framework CRISP-DM aplicado con business context\n2. Análisis multivariante: PCA, clustering jerárquico si aplica\n3. Statistical testing: p-values, effect size, confidence intervals\n4. Causal inference: diferencia correlación de causalidad\n5. Business insights con revenue impact cuantificado\n6. Data quality assessment y limitaciones del análisis\n7. 30-60-90 day roadmap de implementación\n\nCódigo production-ready con type hints y docstrings.\nResponde en ${l}.`},
+  codigo:{p:(t,l)=>`Eres un Python developer Sr especialista en data, paciente y didáctico.\n\nQuiero aprender a hacer "${t||'procesamiento de datos'}" con Python.\n\nNecesito:\n1. Código completo con comentarios en cada línea importante\n2. Por qué cada librería y no otra alternativa\n3. Instrucciones exactas para ejecutarlo\n4. Los 3 errores más comunes y cómo resolverlos\n5. Ejercicio de práctica adicional\n\nNivel básico-intermedio. Todo explicado.\nResponde en ${l}.`,
+  m:(t,l)=>`Escribe Python profesional para "${t||'pipeline de datos'}".\n\n- pandas/polars según el caso de uso\n- Manejo de errores con try/except específicos\n- Type hints y docstrings estilo Google\n- Funciones puras y modulares\n- Logging apropiado\n- Unit tests con pytest\n\nPEP 8 completo. Comenta solo lo no obvio.\nResponde en ${l}.`,
+  a:(t,l)=>`Pipeline production-ready para "${t||'sistema de datos a escala'}".\n\n- ETL robusto: logging, alertas, reintentos exponenciales\n- Optimizado para 10M+ filas (chunking, dtypes, vectorización)\n- Schema validation con Pydantic o Great Expectations\n- CI/CD ready con GitHub Actions\n- Containerizado con Docker\n- Observabilidad: métricas de rendimiento y data quality\n\nIncluye benchmarks y análisis de complejidad.\nResponde en ${l}.`},
+  sql:{p:(t,l)=>`SQL experto y didáctico para "${t||'análisis de datos de negocio'}".\n\n1. Estructura SELECT-FROM-WHERE-GROUP BY con analogías\n2. JOINs explicados con diagramas de Venn en texto\n3. Agregaciones: COUNT, SUM, AVG, MIN, MAX con contexto de negocio\n4. HAVING vs WHERE: cuándo usar cada uno\n5. Query completa lista para ejecutar con datos de ejemplo\n\nBase: PostgreSQL.\nResponde en ${l}.`,
+  m:(t,l)=>`Queries SQL avanzadas para "${t||'reportes de negocio complejos'}".\n\n1. CTEs para organizar lógica compleja\n2. Window functions: ROW_NUMBER, RANK, LAG, LEAD, NTILE\n3. Subconsultas vs CTEs: cuándo cada una\n4. Índices recomendados con justificación\n5. EXPLAIN ANALYZE y cómo interpretarlo\n\nPostgreSQL. Formato: query + explicación + resultado esperado.\nResponde en ${l}.`,
+  a:(t,l)=>`SQL de alto rendimiento para "${t||'datos a escala empresarial'}".\n\n1. Query optimization para 100M+ filas\n2. Partitioning strategy con justificación\n3. Índices: B-tree vs GIN vs GiST, compuestos vs parciales\n4. Materialized views y estrategia de refresh\n5. Query hints y análisis de EXPLAIN (ANALYZE, BUFFERS)\n6. Equivalente en dbt si aplica\n\nIncluye análisis de complejidad y benchmarks esperados.\nResponde en ${l}.`},
+  dashboard:{p:(t,l)=>`Experto en BI y visualización para "${t||'dashboard de mi negocio'}".\n\n1. Los 6 KPIs más importantes y por qué (no más)\n2. Tipo de gráfica para cada métrica y justificación\n3. Layout: qué va arriba, centro, abajo y por qué\n4. Paleta de colores y principios de diseño básicos\n5. Paso a paso en Power BI desde cero\n\nQué preguntas debe responder el dashboard.\nResponde en ${l}.`,
+  m:(t,l)=>`Dashboard ejecutivo completo para "${t||'inteligencia de negocio'}".\n\n1. Jerarquía: overview → drilldown → detalle\n2. KPIs con benchmarks, targets y traffic lights\n3. Filtros: fecha dinámica, región, segmento, comparativo\n4. DAX measures necesarias con explicación\n5. Paleta corporativa y diseño accesible (WCAG AA)\n6. Multi-source: cómo conectar SQL + Excel + API\n\nWireframe textual por sección.\nResponde en ${l}.`,
+  a:(t,l)=>`Arquitectura BI enterprise para "${t||'inteligencia empresarial a escala'}".\n\n1. Data model: star schema optimizado para el caso\n2. DAX avanzado: time intelligence, semi-additive, what-if\n3. Row-Level Security con roles dinámicos\n4. Performance: aggregations, incremental refresh, DirectQuery vs Import\n5. Embedding en aplicación web con Power BI API\n6. Governance: lineage, certified datasets, endorsement\n\nArquitectura completa y decisiones de diseño justificadas.\nResponde en ${l}.`},
+  ml:{p:(t,l)=>`Data Scientist Sr explicando ML sin matemáticas intimidantes para "${t||'predicción con mis datos'}".\n\n1. Tipo de modelo recomendado y por qué (analogía simple)\n2. Preparación de datos: qué hacer con NaN, categorías, escalado\n3. Código Python completo con scikit-learn, comentado\n4. Métricas: qué significan accuracy, precision, recall en tu contexto\n5. Diagnóstico: overfitting, underfitting, cómo corregir\n6. Siguiente paso si el modelo no funciona\n\nResponde en ${l}.`,
+  m:(t,l)=>`Modelo ML production-ready para "${t||'problema predictivo empresarial'}".\n\n1. Feature engineering específico para el dominio\n2. Comparación de 3 algoritmos: pros/cons para el caso\n3. Cross-validation estratificada y métricas correctas\n4. Hyperparameter tuning con Optuna (100 trials)\n5. SHAP values para explicabilidad a stakeholders\n6. Pipeline sklearn completo: preprocesamiento → modelo\n7. Estrategia de monitoreo post-deployment\n\nCódigo listo para producción.\nResponde en ${l}.`,
+  a:(t,l)=>`MLOps completo para "${t||'sistema ML en producción a escala'}".\n\n1. Problem framing: OKRs de negocio → métricas ML\n2. Feature store: diseño offline/online, tiempo real\n3. Model selection: ensemble, AutoML, transfer learning\n4. Experiment tracking con MLflow (parameters, metrics, artifacts)\n5. CI/CD para modelos: unit tests, shadow mode, canary\n6. Monitoring: data drift (KS test, PSI), concept drift, alertas\n7. Retraining: triggers, validación automática, rollback\n\nStack tecnológico justificado y ADRs.\nResponde en ${l}.`},
+  viz:{p:(t,l)=>`Experto en visualización de datos para "${t||'mis datos'}".\n\n1. Guía de selección: qué gráfica para comparar, tendencia, distribución, parte-todo\n2. Los 7 errores que hacen las gráficas confusas (con cómo evitarlos)\n3. Código matplotlib + seaborn para 3 gráficas diferentes\n4. Cómo hacer gráficas "bonitas": colores, tipografía, espaciado\n5. La regla del "cuándo NO usar pastel"\n\nCódigo ejecutable con datos de ejemplo.\nResponde en ${l}.`,
+  m:(t,l)=>`Visualizaciones avanzadas e interactivas para "${t||'comunicación de datos'}".\n\n1. Dashboard Plotly con subplots y layout ejecutivo\n2. Storytelling visual: secuencia que construye un argumento\n3. Mapa coroplético con Plotly Express o Folium\n4. Heatmap de correlación con clustering jerárquico\n5. Animación temporal con Plotly o matplotlib.animation\n\nPrincipios de Gestalt aplicados al diseño.\nCódigo reproducible.\nResponde en ${l}.`,
+  a:(t,l)=>`Sistema de visualización nivel editorial para "${t||'comunicación ejecutiva de datos'}".\n\n1. Design system: tokens de color, tipografía, componentes base\n2. Visualizaciones custom imposibles en librerías estándar\n3. Accesibilidad: WCAG 2.1 AA, simulación de daltonismo\n4. Performance: rendering de millones de puntos con WebGL\n5. Storytelling interactivo: scroll-driven narrative\n6. Exportación: SVG vectorial, PDF editable, PNG retina\n\nArquitectura de componentes reutilizables.\nResponde en ${l}.`},
+  limpieza:{p:(t,l)=>`Experto en calidad de datos para "${t||'mi dataset sucio'}".\n\n1. Checklist de problemas comunes a revisar primero\n2. Detectar y manejar NaN: estrategias según el tipo de variable\n3. Eliminar duplicados: exact match vs fuzzy matching\n4. Corregir tipos de datos incorrectos (fechas, strings, números)\n5. Outliers: detectar con IQR y decidir qué hacer\n\nCódigo pandas paso a paso.\nResponde en ${l}.`,
+  m:(t,l)=>`Pipeline de data quality para "${t||'dataset empresarial'}".\n\n1. Profiling con ydata-profiling: qué buscar en el reporte\n2. Imputación avanzada: KNN, MICE, imputación por modelo\n3. Outliers multivariados: Isolation Forest, Mahalanobis distance\n4. Normalización de strings: fuzzy matching con rapidfuzz\n5. Validación de schema con Great Expectations\n6. Documentar transformaciones para reproducibilidad\n\nCódigo modular con tests.\nResponde en ${l}.`,
+  a:(t,l)=>`Framework de Data Quality enterprise para "${t||'datos en producción'}".\n\n1. Dimensiones de calidad: completeness, accuracy, consistency, timeliness, uniqueness\n2. Statistical process control: control charts para anomalías en tiempo real\n3. Great Expectations: expectation suites, checkpoints, data docs automatizados\n4. Entity resolution a escala: blocking + record linkage (Splink)\n5. Master Data Management: golden record strategy\n6. Data catalog: lineage automático con OpenMetadata\n7. SLAs de calidad: alertas, escalación, ownership\n\nArquitectura end-to-end.\nResponde en ${l}.`},
+  story:{p:(t,l)=>`Experto en comunicar datos de forma persuasiva para "${t||'mis resultados de negocio'}".\n\n1. Estructura narrativa: Situación → Complicación → Resolución\n2. Las 3 métricas que más importan a tu audiencia (no más de 3)\n3. Cómo traducir números a impacto de negocio comprensible\n4. Template de presentación: qué va en cada slide\n5. Cómo hacer que las conclusiones sean memorables\n\nEjemplo de script para presentar.\nResponde en ${l}.`,
+  m:(t,l)=>`Narrativa de datos ejecutiva para "${t||'presentación de alto impacto'}".\n\n1. SCR Framework (Situation-Complication-Resolution) aplicado\n2. La "gran idea" en una oración: cómo construirla\n3. Estructura de slides: 1 idea por slide, datos que la soportan\n4. Lenguaje de C-suite: EBITDA, market share, CAC, LTV\n5. Manejo de objeciones con datos en tiempo real\n6. CTA medible y con ownership claro\n\nScript completo de presentación.\nResponde en ${l}.`,
+  a:(t,l)=>`Estrategia de Data Storytelling organizacional para "${t||'cultura data-driven'}".\n\n1. Audience segmentation: C-suite vs managers vs analistas vs frontline\n2. Narrative arc: cómo construir urgencia y momentum con datos\n3. Cognitive biases: cómo los datos desafían o confirman intuiciones\n4. Data journalism techniques: show don't tell, la historia primero\n5. Dashboard narrative design: guiar la mirada intencionalmente\n6. Métricas de impacto: ¿cómo mides que tu historia cambió decisiones?\n7. Building a data culture: de presentaciones a conversaciones\n\nPlaybook replicable para tu organización.\nResponde en ${l}.`}
 };
 
 function genPrompt(){
@@ -965,41 +1559,169 @@ function genPrompt(){
   document.getElementById('outbox').classList.remove('on');
   document.getElementById('ldr').classList.add('on');
   setTimeout(()=>{
-    const lvMap={p:'p',m:'m',a:'a'};
-    const fn=prompts[type]?.[lvMap[lv]];
+    const fn=PROMPTS[type]?.[lv];
     const txt=fn?fn(topic,lang):'Combinación no disponible.';
-    document.getElementById('outtext').textContent=txt;
+    document.getElementById('otext').textContent=txt;
     document.getElementById('ldr').classList.remove('on');
     document.getElementById('outbox').classList.add('on');
     document.getElementById('outbox').scrollIntoView({behavior:'smooth',block:'nearest'});
-  },800);
+  },750);
 }
-
 function copyP(){
-  navigator.clipboard.writeText(document.getElementById('outtext').textContent).then(()=>{
-    const b=document.getElementById('cpbtn');
-    b.textContent='✓ Copiado!'; setTimeout(()=>{b.innerHTML='📋 Copiar prompt';},2000);
+  navigator.clipboard.writeText(document.getElementById('otext').textContent).then(()=>{
+    const b=document.querySelector('.cpbtn');b.textContent='✓ Copiado!';
+    setTimeout(()=>{b.textContent='📋 Copiar';},2000);
   });
 }
-
 function quick(type,topic){
   document.getElementById('pt-sel').value=type;
   document.getElementById('topic-in').value=topic;
   document.getElementById('lv-sel').value='m';
   document.getElementById('prompts').scrollIntoView({behavior:'smooth'});
-  setTimeout(genPrompt,450);
+  setTimeout(genPrompt,400);
 }
 
-// Active nav on scroll
-const secs=['home','topics','posts','top5','prompts','services'];
+// ══════════════════════════════════════════
+// NEWSLETTER
+// ══════════════════════════════════════════
+function nlSubmit(){
+  const em=document.getElementById('nl-em').value;
+  if(!em||!em.includes('@'))return alert('Ingresa un email válido');
+  document.querySelector('.nls').textContent='✓ ¡Suscrito!';
+  document.getElementById('nl-em').value='';
+}
+
+// ══════════════════════════════════════════
+// AGENTE IA — CHAT
+// ══════════════════════════════════════════
+let chatOpen=false;
+let chatHistory=[];
+let sugsHidden=false;
+
+const SYSTEM_PROMPT=`Eres el asistente de Bits & Datos, un blog de data science de nivel senior escrito por Alejandro Reyes, un Data Scientist con 10+ años de experiencia en Python, SQL, Machine Learning, Power BI e IA Generativa.
+
+Tu personalidad:
+- Experto real, no genérico. Hablas desde la experiencia de haber trabajado con datos reales en producción.
+- Directo y honesto. Si algo es difícil, lo dices. Si hay una herramienta mejor, la recomiendas aunque no sea la más famosa.
+- Didáctico pero sin condescender. Explicas como si el usuario fuera inteligente pero no necesariamente experto.
+- Práctico. Siempre que puedas, das código real y ejecutable.
+- Bilingüe. Si te hablan en inglés, respondes en inglés. Si en español, en español.
+
+Áreas de expertise:
+- Python para datos: pandas, polars, numpy, scikit-learn, xgboost, plotly, matplotlib
+- SQL avanzado: window functions, CTEs recursivas, optimización de queries, PostgreSQL
+- Machine Learning: clasificación, regresión, clustering, detección de anomalías, MLOps
+- Power BI / Tableau: DAX, modelado de datos, dashboards ejecutivos
+- IA Generativa: LLMs, RAG, prompting, agentes, LangChain
+- Visualización: matplotlib, seaborn, plotly, storytelling con datos
+
+Cuando des código:
+- Que sea real y funcional, no pseudocódigo
+- Agrega comentarios en las partes no obvias
+- Menciona si hay alternativas mejores
+
+Cuando no sepas algo: dilo honestamente y sugiere dónde buscar.
+Mantén respuestas concisas pero completas. Máximo 300 palabras salvo que se pida código extenso.`;
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  const win=document.getElementById('chat-win');
+  win.classList.toggle('open',chatOpen);
+  if(chatOpen&&chatHistory.length===0){
+    addMsg('bot','¡Hola! Soy el asistente de **Bits & Datos**. Puedo ayudarte con Python, SQL, Machine Learning, Power BI e IA Generativa. ¿Qué estás trabajando hoy?');
+  }
+}
+
+function addMsg(role,text){
+  const msgs=document.getElementById('chat-msgs');
+  const div=document.createElement('div');
+  div.className=`msg ${role}`;
+  const av=document.createElement('div');av.className='msg-avatar';
+  av.textContent=role==='bot'?'BD':'Tú';
+  const bubble=document.createElement('div');bubble.className='msg-bubble';
+  bubble.innerHTML=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>');
+  if(role==='bot'){div.appendChild(av);div.appendChild(bubble);}
+  else{div.appendChild(bubble);div.appendChild(av);}
+  msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function showTyping(){
+  const msgs=document.getElementById('chat-msgs');
+  const div=document.createElement('div');div.className='msg bot';div.id='typing-indicator';
+  const av=document.createElement('div');av.className='msg-avatar';av.textContent='BD';
+  const bubble=document.createElement('div');bubble.className='msg-bubble';
+  bubble.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';
+  div.appendChild(av);div.appendChild(bubble);msgs.appendChild(div);
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function hideTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove();}
+
+async function sendChat(){
+  const input=document.getElementById('chat-in');
+  const text=input.value.trim();
+  if(!text)return;
+  input.value='';
+  
+  if(!sugsHidden){document.getElementById('chat-sugs').style.display='none';sugsHidden=true;}
+  
+  addMsg('user',text);
+  chatHistory.push({role:'user',content:text});
+  showTyping();
+
+  try{
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:SYSTEM_PROMPT,
+        messages:chatHistory
+      })
+    });
+    const data=await response.json();
+    hideTyping();
+    const reply=data.content?.[0]?.text||'Lo siento, tuve un problema. Intenta de nuevo.';
+    chatHistory.push({role:'assistant',content:reply});
+    addMsg('bot',reply);
+  }catch(e){
+    hideTyping();
+    addMsg('bot','Hubo un error de conexión. Revisa tu conexión e intenta de nuevo.');
+  }
+}
+
+function askSug(el){
+  document.getElementById('chat-in').value=el.textContent;
+  sendChat();
+}
+
+// ══════════════════════════════════════════
+// LANG TOGGLE
+// ══════════════════════════════════════════
+const T={
+  es:{ey:'Data · SQL · Python · ML · IA · Visualización',h1:'Convierte datos en',h1e:'ventaja competitiva.',hsub:'Tutoriales de nivel senior, análisis profundos y recursos prácticos sobre data science. En español e inglés, sin relleno.',hb1:'Ver artículos',hb2:'Conoce al autor',hb3:'Generador de prompts ↗',s1:'Artículos Sr publicados',s2:'Tipos de prompts IA',s3:'Tecnologías cubiertas',s4:'Idiomas disponibles',abtag:'// sobre el autor',absh:'El cerebro detrás de <em>Bits & Datos</em>',aname:'Alejandro Reyes',atitle:'Senior Data Scientist · LATAM',abio:'10+ años transformando datos en decisiones de negocio. Especialista en Python, ML y visualización avanzada.',abh3:'¿Por qué Bits & Datos?',abp1:'Pasé años buscando recursos de data science en español que fueran realmente profundos, escritos por alguien que ha trabajado con datos reales en empresas reales — no solo traducciones de documentación oficial. No los encontré, así que decidí crearlos.',abp2:'Bits & Datos nació como el recurso que yo hubiera necesitado cuando empecé: tutoriales honestos, código que realmente funciona en producción, y análisis que van más allá del "hola mundo" de los datos.',abp3:'He trabajado como Data Scientist en empresas de retail, fintech y salud en México, Colombia y España. He visto cómo los datos bien analizados pueden reducir costos en 30%, predecir la demanda con 95% de precisión y detectar fraude antes de que ocurra.',ex1:'Años en data science',ex2:'Proyectos en producción',ex3:'Países trabajados',ex4:'Líneas de código en prod',tgtop:'// tecnologías',shtop:'Todo lo que necesitas<br>para <em>dominar los datos</em>',td1:'Pandas, NumPy, Polars, automatización, APIs y visualización avanzada con Plotly.',td2:'Desde JOINs básicos hasta window functions, CTEs y optimización de queries en producción.',td3:'Dashboards ejecutivos, DAX avanzado, storytelling con datos y RLS.',td4:'Modelos predictivos, scikit-learn, XGBoost, MLOps y deployment en producción.',td5:'LLMs, prompting avanzado, RAG, agentes y APIs de IA aplicadas a data science.',tgart:'// artículos · nivel senior',shart:'Tutoriales <em>profundos</em>, no superficiales'},
+  en:{ey:'Data · SQL · Python · ML · AI · Visualization',h1:'Turn data into',h1e:'competitive advantage.',hsub:'Senior-level tutorials, deep analysis and practical resources on data science. In English and Spanish, no fluff.',hb1:'View articles',hb2:'Meet the author',hb3:'Prompt generator ↗',s1:'Sr articles published',s2:'AI prompt types',s3:'Technologies covered',s4:'Languages available',abtag:'// about the author',absh:'The mind behind <em>Bits & Datos</em>',aname:'Alejandro Reyes',atitle:'Senior Data Scientist · LATAM',abio:'10+ years turning data into business decisions. Specialist in Python, ML and advanced visualization.',abh3:'Why Bits & Datos?',abp1:"I spent years looking for data science resources in Spanish that were genuinely deep, written by someone who has worked with real data at real companies — not just official documentation translations. I couldn't find them, so I decided to create them.",abp2:"Bits & Datos was born as the resource I wish I'd had when starting out: honest tutorials, code that actually works in production, and analysis that goes beyond the 'hello world' of data.",abp3:'I have worked as a Data Scientist in retail, fintech and health companies in Mexico, Colombia and Spain. I have seen how well-analyzed data can reduce costs by 30%, predict demand with 95% accuracy and detect fraud before it happens.',ex1:'Years in data science',ex2:'Projects in production',ex3:'Countries worked',ex4:'Lines of code in prod',tgtop:'// technologies',shtop:'Everything you need<br>to <em>master data</em>',td1:'Pandas, NumPy, Polars, automation, APIs and advanced visualization with Plotly.',td2:'From basic JOINs to window functions, CTEs and production query optimization.',td3:'Executive dashboards, advanced DAX, data storytelling and RLS.',td4:'Predictive models, scikit-learn, XGBoost, MLOps and production deployment.',td5:'LLMs, advanced prompting, RAG, agents and AI APIs applied to data science.',tgart:'// articles · senior level',shart:'<em>Deep</em> tutorials, not shallow ones'}
+};
+function setLang(lang){
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('on'));
+  document.querySelector(`.lb[onclick="setLang('${lang}')"]`).classList.add('on');
+  const t=T[lang];
+  for(const[id,val]of Object.entries(t)){
+    const el=document.getElementById(id);if(!el)continue;
+    if(el.tagName==='INPUT'&&el.type==='email')el.placeholder=val;
+    else el.innerHTML=val;
+  }
+}
+
+// Active nav
+const sections=['home','about','topics','articles','top5','prompts','services'];
 window.addEventListener('scroll',()=>{
-  const y=window.scrollY+80;
-  secs.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    const top=el.offsetTop, bot=top+el.offsetHeight;
-    const link=document.getElementById('nl-'+id);
-    if(link) link.classList.toggle('active',y>=top&&y<bot);
+  const y=window.scrollY+70;
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    const href=a.getAttribute('href').replace('#','');
+    const el=document.getElementById(href);
+    if(el){const top=el.offsetTop,bot=top+el.offsetHeight;a.style.color=y>=top&&y<bot?'var(--text)':'var(--text2)';}
   });
 });
 </script>
